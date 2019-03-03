@@ -3,7 +3,9 @@ using NFluent;
 using NSubstitute;
 using NUnit.Framework;
 using TrainTrain.Domain;
+using TrainTrain.Domain.Port;
 using TrainTrain.Infra;
+using TrainTrain.Infra.Adapter;
 
 namespace TrainTrain.Test.Acceptance
 {
@@ -20,7 +22,7 @@ namespace TrainTrain.Test.Acceptance
             var trainDataService = BuildTrainDataService(_trainId, TrainTopologyGenerator.With_10_available_seats());
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
-            ITicketOffice ticketOffice = new TicketOffice(trainDataService, bookingReferenceService);
+            IProvideSeatsReservation ticketOffice = new TicketOffice(trainDataService, bookingReferenceService);
             var seatsReservationAdapter = new SeatsReservationAdapter(ticketOffice);
             var jsonReservation = seatsReservationAdapter.ReserveAsync(_trainId.Id, seatsRequestedCount).Result;
 
@@ -62,9 +64,9 @@ namespace TrainTrain.Test.Acceptance
                     $"{{\"train_id\": \"{_trainId}\", \"booking_reference\": \"{_bookingReference}\", \"seats\": [\"1B\", \"2B\"]}}");
         }
 
-        private static IBookingReferenceService BuildBookingReferenceService(BookingReference bookingReference)
+        private static IProvideBookingReference BuildBookingReferenceService(BookingReference bookingReference)
         {
-            var bookingReferenceService = Substitute.For<IBookingReferenceService>();
+            var bookingReferenceService = Substitute.For<IProvideBookingReference>();
             bookingReferenceService.GetBookingReference().Returns(Task.FromResult(bookingReference));
             return bookingReferenceService;
         }

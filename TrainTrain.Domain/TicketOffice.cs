@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
+using TrainTrain.Domain.Port;
 
 namespace TrainTrain.Domain
 {
-    public class TicketOffice : ITicketOffice
+    public class TicketOffice : IProvideSeatsReservation
     {
         private readonly ITrainDataService _trainDataService;
-        private readonly IBookingReferenceService _bookingReferenceService;
+        private readonly IProvideBookingReference _bookingReferenceService;
 
-        public TicketOffice(ITrainDataService trainDataService, IBookingReferenceService bookingReferenceService)
+        public TicketOffice(ITrainDataService trainDataService, IProvideBookingReference bookingReferenceService)
         {
             _trainDataService = trainDataService;
             _bookingReferenceService = bookingReferenceService;

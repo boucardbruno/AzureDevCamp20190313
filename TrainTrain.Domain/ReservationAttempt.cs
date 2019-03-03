@@ -8,7 +8,7 @@ namespace TrainTrain.Domain
         public TrainId TrainId { get; }
         public List<Seat> Seats { get; private set; }
         public BookingReference BookingReference { get; private set; }
-        public SeatsRequested SeatsRequested { get; }
+        private SeatsRequested SeatsRequested { get; }
 
         public ReservationAttempt(TrainId trainId, SeatsRequested seatsRequestedCount, IEnumerable<Seat> seats)
         {

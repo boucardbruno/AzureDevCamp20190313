@@ -2,16 +2,22 @@
 using System.Text;
 using System.Threading.Tasks;
 using TrainTrain.Domain;
+using TrainTrain.Domain.Port;
 
-namespace TrainTrain.Infra
+namespace TrainTrain.Infra.Adapter
 {
     public class SeatsReservationAdapter
     {
-        private readonly ITicketOffice _ticketOffice;
+        private readonly IProvideSeatsReservation _ticketOffice;
 
-        public SeatsReservationAdapter(ITicketOffice ticketOffice)
+        public SeatsReservationAdapter(IProvideSeatsReservation ticketOffice)
         {
             _ticketOffice = ticketOffice;
+        }
+
+        public async Task<string> ReserveAsync(string trainId, int seatsRequestedCount)
+        {
+            return AdaptReservation(await _ticketOffice.Reserve(new TrainId(trainId), new SeatsRequested(seatsRequestedCount)));
         }
 
         public static string AdaptReservation(Reservation reservation)
@@ -42,11 +48,6 @@ namespace TrainTrain.Infra
             sb.Append("]");
 
             return sb.ToString();
-        }
-
-        public async Task<string> ReserveAsync(string trainId, int seatsRequestedCount)
-        {
-            return AdaptReservation(await _ticketOffice.Reserve(new TrainId(trainId), new SeatsRequested(seatsRequestedCount)));
         }
     }
 }

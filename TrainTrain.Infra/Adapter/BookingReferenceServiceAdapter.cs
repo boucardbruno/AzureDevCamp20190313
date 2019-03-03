@@ -3,10 +3,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using TrainTrain.Domain;
+using TrainTrain.Domain.Port;
 
-namespace TrainTrain.Infra
+namespace TrainTrain.Infra.Adapter
 {
-    public class BookingReferenceServiceAdapter : IBookingReferenceService
+    public class BookingReferenceServiceAdapter : IProvideBookingReference
     {
         private readonly string _uriBookingReferenceService;
 

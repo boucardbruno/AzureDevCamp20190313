@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TrainTrain.Domain;
+using TrainTrain.Domain.Port;
 
-namespace TrainTrain.Infra
+namespace TrainTrain.Infra.Adapter
 {
     public class TrainDataServiceAdapter : ITrainDataService
     {

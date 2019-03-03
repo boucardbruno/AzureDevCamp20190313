@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace TrainTrain.Domain
+namespace TrainTrain.Domain.Port
 {
-    public interface ITicketOffice
+    public interface IProvideSeatsReservation
     {
         Task<Reservation> Reserve(TrainId trainId, SeatsRequested seatsRequested);
     }
