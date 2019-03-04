@@ -22,11 +22,11 @@ namespace TrainTrain.Domain
             {
                 var reservationAttempt = train.BuildReservationAttempt(seatsRequested);
 
-                if (reservationAttempt.IsFulFilled())
+                if (reservationAttempt.IsFulFilled)
                 {
                     var bookingReference = await _bookingReferenceService.GetBookingReference();
 
-                    reservationAttempt.AssignBookingReference(bookingReference);
+                    reservationAttempt = reservationAttempt.AssignBookingReference(bookingReference);
 
                     await _trainDataService.BookSeats(reservationAttempt);
 

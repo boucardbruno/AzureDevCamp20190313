@@ -1,7 +1,6 @@
 ﻿using NFluent;
 using NUnit.Framework;
 using TrainTrain.Domain;
-using TrainTrain.Infra;
 using TrainTrain.Infra.Adapter;
 using TrainTrain.Test.Acceptance;
 

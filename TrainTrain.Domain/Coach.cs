@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Value;
 
@@ -8,16 +9,15 @@ namespace TrainTrain.Domain
     {
         private readonly List<Seat> _seats;
         public IReadOnlyCollection<Seat> Seats => _seats;
-        private string CoachName { get; }
+        private string Name { get; }
 
-        public Coach(string coachName) : this(coachName, new List<Seat>())
+        public Coach(string name) : this(name, new List<Seat>())
         {
         }
 
-        public Coach(string coachName, List<Seat> seats)
+        public Coach(string name, List<Seat> seats)
         {
-            CoachName = coachName;
-            _seats = seats;
+            Name = name;
             _seats = seats;
         }
 
@@ -29,14 +29,16 @@ namespace TrainTrain.Domain
 
         public ReservationAttempt BuildReservationAttempt(TrainId trainId, SeatsRequested seatsRequested)
         {
-            var availableSeats = Seats.Where(s => s.IsAvailable()).Take(seatsRequested.Count);
+            var availableSeats = Seats.Where(s => s.IsAvailable()).Take(seatsRequested.Count).ToList();
+            return (availableSeats.Count == seatsRequested.Count)
+                ? new ReservationAttempt(trainId, seatsRequested, availableSeats) 
+                : new ReservationAttemptFailure(trainId, seatsRequested);
 
-            return new ReservationAttempt(trainId, seatsRequested, availableSeats);
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] {CoachName, new ListByValue<Seat>(_seats)};
+            return new object[] {Name, new ListByValue<Seat>(_seats)};
         }
     }
 }

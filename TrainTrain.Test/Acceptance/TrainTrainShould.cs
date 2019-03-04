@@ -4,7 +4,6 @@ using NSubstitute;
 using NUnit.Framework;
 using TrainTrain.Domain;
 using TrainTrain.Domain.Port;
-using TrainTrain.Infra;
 using TrainTrain.Infra.Adapter;
 
 namespace TrainTrain.Test.Acceptance

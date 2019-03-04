@@ -10,11 +10,10 @@ namespace TrainTrain.Test.Unit
         [Test]
         public void Be_value_object()
         {
-            var coach = new Coach("A", new List<Seat> { new Seat("A", 1), new Seat("A", 2)});
-            var sameCoach = new Coach("A", new List<Seat> { new Seat("A", 1), new Seat("A", 2) });
+            var coach = new Coach("A", new List<Seat> {new Seat("A", 1), new Seat("A", 2)});
+            var sameCoach = new Coach("A", new List<Seat> {new Seat("A", 1), new Seat("A", 2)});
 
             Check.That(coach).IsEqualTo(sameCoach);
         }
     }
 }
-

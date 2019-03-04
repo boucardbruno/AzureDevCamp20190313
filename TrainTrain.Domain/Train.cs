@@ -44,7 +44,7 @@ namespace TrainTrain.Domain
             foreach (var coach in Coaches.Values)
             {
                 var reservationAttempt = coach.BuildReservationAttempt(TrainId, seatsRequested);
-                if (reservationAttempt.IsFulFilled())
+                if (reservationAttempt.IsFulFilled)
                     return reservationAttempt;
             }
 

@@ -36,7 +36,6 @@ namespace TrainTrain.Test.Acceptance
         public static string With_2_coaches_and_9_seats_already_reserved_in_the_first_coach()
         {
             return "{\"seats\": {" +
-
                    "\"1A\": {\"booking_reference\": \"75bcd16\", \"seat_number\": \"1\", \"coach\": \"A\"}, " +
                    "\"2A\": {\"booking_reference\": \"75bcd16\", \"seat_number\": \"2\", \"coach\": \"A\"}, " +
                    "\"3A\": {\"booking_reference\": \"75bcd15\", \"seat_number\": \"3\", \"coach\": \"A\"}, " +
@@ -47,7 +46,6 @@ namespace TrainTrain.Test.Acceptance
                    "\"8A\": {\"booking_reference\": \"a5bcd16\", \"seat_number\": \"8\", \"coach\": \"A\"}, " +
                    "\"9A\": {\"booking_reference\": \"c5bce14\", \"seat_number\": \"9\", \"coach\": \"A\"}, " +
                    "\"10A\": {\"booking_reference\": \"\", \"seat_number\": \"10\", \"coach\": \"A\"}," +
-
                    "\"1B\": {\"booking_reference\": \"\", \"seat_number\": \"1\", \"coach\": \"B\"}, " +
                    "\"2B\": {\"booking_reference\": \"\", \"seat_number\": \"2\", \"coach\": \"B\"}, " +
                    "\"3B\": {\"booking_reference\": \"\", \"seat_number\": \"3\", \"coach\": \"B\"}, " +
