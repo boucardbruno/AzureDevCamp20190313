@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Value;
 
 namespace TrainTrain.Domain
@@ -10,11 +11,11 @@ namespace TrainTrain.Domain
         public BookingReference BookingReference { get; }
         public IReadOnlyCollection<Seat> Seats => _seats;
 
-        public Reservation(TrainId trainId, BookingReference bookingReference, List<Seat> seats)
+        public Reservation(TrainId trainId, BookingReference bookingReference, IEnumerable<Seat> seats)
         {
             TrainId = trainId;
             BookingReference = bookingReference;
-            _seats = seats;
+            _seats = seats.ToList();
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()

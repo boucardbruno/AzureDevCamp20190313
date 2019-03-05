@@ -26,11 +26,8 @@ namespace TrainTrain.Domain
                 {
                     var bookingReference = await _bookingReferenceService.GetBookingReference();
 
-                    reservationAttempt = reservationAttempt.AssignBookingReference(bookingReference);
-
-                    await _trainDataService.BookSeats(reservationAttempt);
-
-                    return reservationAttempt.Confirm();
+                    return await _trainDataService.BookSeats(
+                        reservationAttempt.AssignBookingReference(bookingReference));
                 }
             }
 

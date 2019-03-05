@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Value;
 
@@ -30,10 +29,9 @@ namespace TrainTrain.Domain
         public ReservationAttempt BuildReservationAttempt(TrainId trainId, SeatsRequested seatsRequested)
         {
             var availableSeats = Seats.Where(s => s.IsAvailable()).Take(seatsRequested.Count).ToList();
-            return (availableSeats.Count == seatsRequested.Count)
-                ? new ReservationAttempt(trainId, seatsRequested, availableSeats) 
+            return availableSeats.Count == seatsRequested.Count
+                ? new ReservationAttempt(trainId, seatsRequested, availableSeats)
                 : new ReservationAttemptFailure(trainId, seatsRequested);
-
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()

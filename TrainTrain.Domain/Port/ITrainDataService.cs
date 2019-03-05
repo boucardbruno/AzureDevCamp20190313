@@ -5,6 +5,6 @@ namespace TrainTrain.Domain.Port
     public interface ITrainDataService
     {
         Task<Train> GetTrain(TrainId trainId);
-        Task BookSeats(ReservationAttempt reservationAttempt);
+        Task<Reservation> BookSeats(ReservationAttempt reservationAttempt);
     }
 }

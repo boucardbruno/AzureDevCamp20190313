@@ -16,14 +16,14 @@ namespace TrainTrain.Test.Acceptance
         [Test]
         public void Reserve_seats_when_train_is_empty()
         {
-            const int seatsRequestedCount = 3;
-
-            var trainDataService = BuildTrainDataService(_trainId, TrainTopologyGenerator.With_10_available_seats());
+            var seatsRequestedCount = new SeatsRequested(3);
+            var trainDataService = BuildTrainTopology(_trainId, TrainTopologyGenerator.With_10_available_seats(),
+                _bookingReference, new Seat("A", 1), new Seat("A", 2), new Seat("A", 3));
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
             IProvideSeatsReservation ticketOffice = new TicketOffice(trainDataService, bookingReferenceService);
             var seatsReservationAdapter = new SeatsReservationAdapter(ticketOffice);
-            var jsonReservation = seatsReservationAdapter.ReserveAsync(_trainId.Id, seatsRequestedCount).Result;
+            var jsonReservation = seatsReservationAdapter.ReserveAsync(_trainId.Id, seatsRequestedCount.Count).Result;
 
             Check.That(jsonReservation)
                 .IsEqualTo(
@@ -36,7 +36,8 @@ namespace TrainTrain.Test.Acceptance
             var seatsRequestedCount = new SeatsRequested(3);
 
             var trainDataService =
-                BuildTrainDataService(_trainId, TrainTopologyGenerator.With_10_seats_and_6_already_reserved());
+                BuildTrainTopology(_trainId, TrainTopologyGenerator.With_10_seats_and_6_already_reserved(),
+                    _bookingReference);
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
             var ticketOffice = new TicketOffice(trainDataService, bookingReferenceService);
@@ -51,8 +52,10 @@ namespace TrainTrain.Test.Acceptance
         {
             var seatsRequestedCount = new SeatsRequested(2);
 
-            var trainDataService = BuildTrainDataService(_trainId,
-                TrainTopologyGenerator.With_2_coaches_and_9_seats_already_reserved_in_the_first_coach());
+            var trainDataService = BuildTrainTopology(_trainId,
+                TrainTopologyGenerator.With_2_coaches_and_9_seats_already_reserved_in_the_first_coach(),
+                _bookingReference, new Seat("B", 1), new Seat("B", 2));
+
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
             var ticketOffice = new TicketOffice(trainDataService, bookingReferenceService);
@@ -70,12 +73,17 @@ namespace TrainTrain.Test.Acceptance
             return bookingReferenceService;
         }
 
-        private static ITrainDataService BuildTrainDataService(TrainId trainId, string trainTopology)
+        private static ITrainDataService BuildTrainTopology(TrainId trainId, string trainTopology,
+            BookingReference bookingReference, params Seat[] seats)
         {
             var trainDataService = Substitute.For<ITrainDataService>();
             trainDataService.GetTrain(trainId)
                 .Returns(Task.FromResult(new Train(trainId,
                     TrainDataServiceAdapter.AdaptTrainTopology(trainTopology))));
+
+            trainDataService.BookSeats(Arg.Any<ReservationAttempt>())
+                .Returns(Task.FromResult(new Reservation(trainId, bookingReference, seats)));
+
             return trainDataService;
         }
     }

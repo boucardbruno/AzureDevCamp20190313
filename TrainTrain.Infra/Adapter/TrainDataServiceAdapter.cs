@@ -35,7 +35,7 @@ namespace TrainTrain.Infra.Adapter
             }
         }
 
-        public async Task BookSeats(ReservationAttempt reservationAttempt)
+        public async Task<Reservation> BookSeats(ReservationAttempt reservationAttempt)
         {
             using (var client = new HttpClient())
             {
@@ -51,6 +51,8 @@ namespace TrainTrain.Infra.Adapter
                 var response = await client.PostAsync("reserve", resJson);
 
                 response.EnsureSuccessStatusCode();
+
+                return reservationAttempt.Confirm();
             }
         }
 
