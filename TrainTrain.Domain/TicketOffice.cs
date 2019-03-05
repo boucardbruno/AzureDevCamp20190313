@@ -18,7 +18,7 @@ namespace TrainTrain.Domain
         {
             var train = await _trainDataService.GetTrain(trainId);
 
-            if (train.DoesNotExceedOverallTrainCapacity(seatsRequested))
+            if (train.DoesNotExceedOverallCapacity(seatsRequested))
             {
                 var reservationAttempt = train.BuildReservationAttempt(seatsRequested);
 
