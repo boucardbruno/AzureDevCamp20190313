@@ -9,6 +9,10 @@ namespace TrainTrain.Domain
     public class Train : ValueType<Train>
     {
         private readonly Dictionary<string, Coach> _coaches;
+        private TrainId TrainId { get; }
+
+        public IReadOnlyDictionary<string, Coach> Coaches => _coaches;
+
 
         public Train(TrainId trainId, Dictionary<string, Coach> coaches)
         {
@@ -16,18 +20,10 @@ namespace TrainTrain.Domain
             _coaches = coaches;
         }
 
-        private int GetMaxSeat()
-        {
-            return Seats.Count;
-        }
-
-        private int ReservedSeats
+        private int NumberOfReservedSeats
         {
             get { return Seats.Count(s => !s.IsAvailable()); }
         }
-
-        private TrainId TrainId { get; }
-        public IReadOnlyDictionary<string, Coach> Coaches => _coaches;
 
         private List<Seat> Seats
         {
@@ -36,7 +32,7 @@ namespace TrainTrain.Domain
 
         public bool DoesNotExceedOverallCapacity(SeatsRequested seatsRequested)
         {
-            return ReservedSeats + seatsRequested.Count <= Math.Floor(ThresholdManager.GetMaxRes() * GetMaxSeat());
+            return NumberOfReservedSeats + seatsRequested.Count <= Math.Floor(CapacityThreshold.ForTrain * Seats.Count);
         }
 
         public ReservationAttempt BuildReservationAttempt(SeatsRequested seatsRequested)
@@ -44,6 +40,7 @@ namespace TrainTrain.Domain
             foreach (var coach in Coaches.Values)
             {
                 var reservationAttempt = coach.BuildReservationAttempt(TrainId, seatsRequested);
+
                 if (reservationAttempt.IsFulFilled)
                     return reservationAttempt;
             }

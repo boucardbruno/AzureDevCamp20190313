@@ -17,6 +17,7 @@ namespace TrainTrain.Domain
             {
                 TrainNumber = trainIds[0];
             }
+
             Date = new DateTime(int.Parse(trainIds[1]), int.Parse(trainIds[2]), int.Parse(trainIds[3]));
         }
 
@@ -27,7 +28,7 @@ namespace TrainTrain.Domain
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] { TrainNumber, Date};
+            return new object[] {TrainNumber, Date};
         }
     }
 }

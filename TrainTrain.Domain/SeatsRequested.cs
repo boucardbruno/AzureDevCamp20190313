@@ -8,6 +8,7 @@ namespace TrainTrain.Domain
     {
         public const int MinRequested = 1;
         public const int MaxRequested = 20;
+
         public int Count { get; }
 
         public SeatsRequested(int seatRequestCount)
@@ -18,7 +19,10 @@ namespace TrainTrain.Domain
             Count = seatRequestCount;
         }
 
-        public bool IsMatch(IReadOnlyCollection<Seat> seats) => seats.Count == Count;
+        public bool IsMatch(IReadOnlyCollection<Seat> seats)
+        {
+            return seats.Count == Count;
+        }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {

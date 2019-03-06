@@ -8,6 +8,7 @@ namespace TrainTrain.Domain
     {
         public string Id { get; }
         public const int MaxLength = 7;
+
         public BookingReference() : this(string.Empty)
         {
         }
@@ -20,7 +21,6 @@ namespace TrainTrain.Domain
             }
 
             Id = id;
-            
         }
 
         public override string ToString()
