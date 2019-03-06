@@ -17,6 +17,7 @@ namespace TrainTrain.Infra.Adapter
 
         public async Task<string> ReserveAsync(string trainId, int seatsRequestedCount)
         {
+           
             return AdaptReservation(await _ticketOffice.Reserve(new TrainId(trainId), new SeatsRequested(seatsRequestedCount)));
         }
 

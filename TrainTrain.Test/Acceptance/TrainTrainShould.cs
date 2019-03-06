@@ -11,7 +11,7 @@ namespace TrainTrain.Test.Acceptance
     public class TrainTrainShould
     {
         private readonly TrainId _trainId = new TrainId("9043-2019-03-13");
-        private readonly BookingReference _bookingReference = new BookingReference("75bcd15");
+        private readonly BookingReference _bookingReference = new BookingReference("341RTFA");
 
         [Test]
         public void Reserve_seats_when_train_is_empty()

@@ -1,15 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Value;
 
 namespace TrainTrain.Domain
 {
     public class SeatsRequested : ValueType<SeatsRequested>
     {
+        public const int MinRequested = 1;
+        public const int MaxRequested = 20;
         public int Count { get; }
 
-        public SeatsRequested(int count)
+        public SeatsRequested(int seatRequestCount)
         {
-            Count = count;
+            if (seatRequestCount <= MinRequested || seatRequestCount > MaxRequested)
+                throw new ArgumentException($"seatRequestCount should be between {MinRequested} and {MaxRequested}");
+
+            Count = seatRequestCount;
         }
 
         public bool IsMatch(IReadOnlyCollection<Seat> seats) => seats.Count == Count;

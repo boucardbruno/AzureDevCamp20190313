@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TrainTrain.Infra;
 using TrainTrain.Infra.Adapter;
 
 namespace TrainTrain.Api.Controllers

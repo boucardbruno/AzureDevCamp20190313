@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Value;
 
 namespace TrainTrain.Domain
@@ -6,14 +7,20 @@ namespace TrainTrain.Domain
     public class BookingReference : ValueType<BookingReference>
     {
         public string Id { get; }
-
+        public const int MaxLength = 7;
         public BookingReference() : this(string.Empty)
         {
         }
 
         public BookingReference(string id)
         {
+            if (!string.IsNullOrEmpty(id) && id.Length > MaxLength)
+            {
+                throw new ArgumentException($"id should be between {MaxLength}");
+            }
+
             Id = id;
+            
         }
 
         public override string ToString()

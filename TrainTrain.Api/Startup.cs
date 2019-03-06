@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TrainTrain.Domain;
-using TrainTrain.Infra;
 using TrainTrain.Infra.Adapter;
 
 namespace TrainTrain.Api

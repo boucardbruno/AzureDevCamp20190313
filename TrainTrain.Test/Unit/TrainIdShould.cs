@@ -9,10 +9,13 @@ namespace TrainTrain.Test.Unit
         [Test]
         public void Be_value_object()
         {
-            var trainId = new TrainId("Express-2000");
-            var sameTrainId = new TrainId("Express-2000");
+            const string trainPoco = "9043-2019-03-13";
+            var trainId = new TrainId(trainPoco);
+            var sameTrainId = new TrainId(trainPoco);
 
             Check.That(trainId).IsEqualTo(sameTrainId);
+            Check.That(trainId.TrainNumber).IsEqualTo(sameTrainId.TrainNumber);
+            Check.That(trainId.Date).IsEqualTo(sameTrainId.Date);
         }
     }
 }
