@@ -17,6 +17,7 @@ namespace TrainTrain.Test.Acceptance
         public void Reserve_seats_when_train_is_empty()
         {
             var seatsRequestedCount = new SeatsRequested(3);
+
             var trainDataService = BuildTrainTopology(_trainId, TrainTopologyGenerator.With_10_available_seats(),
                 _bookingReference, new Seat("A", 1), new Seat("A", 2), new Seat("A", 3));
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
