@@ -31,14 +31,8 @@ namespace TrainTrain.Domain
         // DDD Pattern: Closure Of Operation
         public ReservationAttempt AssignBookingReference(BookingReference bookingReference)
         {
-            var seats = Seats.Select(seat => new Seat(seat.CoachName, seat.SeatNumber, BookingReference));
-
-            return new ReservationAttempt(TrainId, bookingReference, SeatsRequested, seats);
-        }
-
-        public Reservation Confirm()
-        {
-            return new Reservation(TrainId, BookingReference, _seats);
+            var assignedSeats = Seats.Select(seat => new Seat(seat.CoachName, seat.SeatNumber, BookingReference));
+            return new ReservationAttempt(TrainId, bookingReference, SeatsRequested, assignedSeats);
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()

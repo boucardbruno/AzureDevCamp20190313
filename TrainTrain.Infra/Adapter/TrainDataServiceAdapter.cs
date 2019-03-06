@@ -52,7 +52,7 @@ namespace TrainTrain.Infra.Adapter
 
                 response.EnsureSuccessStatusCode();
 
-                return reservationAttempt.Confirm();
+                return new Reservation(reservationAttempt.TrainId, reservationAttempt.BookingReference, reservationAttempt.Seats);
             }
         }
 

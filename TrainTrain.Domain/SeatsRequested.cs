@@ -12,6 +12,8 @@ namespace TrainTrain.Domain
             Count = count;
         }
 
+        public bool IsMatch(IReadOnlyCollection<Seat> seats) => seats.Count == Count;
+
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
             return new object[] {Count};

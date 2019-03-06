@@ -29,7 +29,7 @@ namespace TrainTrain.Domain
         public ReservationAttempt BuildReservationAttempt(TrainId trainId, SeatsRequested seatsRequested)
         {
             var availableSeats = Seats.Where(s => s.IsAvailable()).Take(seatsRequested.Count).ToList();
-            return availableSeats.Count == seatsRequested.Count
+            return seatsRequested.IsMatch(availableSeats)
                 ? new ReservationAttempt(trainId, seatsRequested, availableSeats)
                 : new ReservationAttemptFailure(trainId, seatsRequested);
         }
