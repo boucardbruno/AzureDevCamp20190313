@@ -24,7 +24,7 @@ namespace TrainTrain.Infra.Adapter
         public static string AdaptReservation(Reservation reservation)
         {
             return
-                $"{{\"train_id\": \"{reservation.TrainId.Id}\", \"booking_reference\": \"{reservation.BookingReference.Id}\", \"seats\": {DumpSeats(reservation.Seats)}}}";
+                $"{{\"train_id\": \"{reservation.TrainId}\", \"booking_reference\": \"{reservation.BookingReference}\", \"seats\": {DumpSeats(reservation.Seats)}}}";
         }
 
         private static string DumpSeats(IEnumerable<Seat> seats)

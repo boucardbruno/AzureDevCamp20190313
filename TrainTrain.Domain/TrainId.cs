@@ -12,13 +12,14 @@ namespace TrainTrain.Domain
 
         public TrainId(string id)
         {
-            var trainIds = id.Split("-");
-            if (trainIds[0].Length == 4)
+            var tokens = id.Split("-");
+
+            if (tokens[0].Length == 4)
             {
-                TrainNumber = trainIds[0];
+                TrainNumber = tokens[0];
             }
 
-            Date = new DateTime(int.Parse(trainIds[1]), int.Parse(trainIds[2]), int.Parse(trainIds[3]));
+            Date = new DateTime(int.Parse(tokens[1]), int.Parse(tokens[2]), int.Parse(tokens[3]));
         }
 
         public override string ToString()
