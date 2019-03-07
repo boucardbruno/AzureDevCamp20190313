@@ -2,9 +2,8 @@
 
 namespace TrainTrain.Domain.Port
 {
-    public interface ITrainDataService
+    public interface IProvideTrainTopology
     {
         Task<Train> GetTrain(TrainId trainId);
-        Task<Reservation> BookSeats(ReservationAttempt reservationAttempt);
     }
 }

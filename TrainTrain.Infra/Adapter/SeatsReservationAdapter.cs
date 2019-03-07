@@ -8,9 +8,9 @@ namespace TrainTrain.Infra.Adapter
 {
     public class SeatsReservationAdapter
     {
-        private readonly IProvideSeatsReservation _ticketOffice;
+        private readonly IProvideReservation _ticketOffice;
 
-        public SeatsReservationAdapter(IProvideSeatsReservation ticketOffice)
+        public SeatsReservationAdapter(IProvideReservation ticketOffice)
         {
             _ticketOffice = ticketOffice;
         }

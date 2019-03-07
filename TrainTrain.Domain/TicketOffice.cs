@@ -3,20 +3,23 @@ using TrainTrain.Domain.Port;
 
 namespace TrainTrain.Domain
 {
-    public class TicketOffice : IProvideSeatsReservation
+    public class TicketOffice : IProvideReservation
     {
-        private readonly ITrainDataService _trainDataService;
+        private readonly IProvideTrainTopology _provideTrainTopology;
+        private readonly IBuildReservation _buildReservation;
         private readonly IProvideBookingReference _bookingReferenceService;
 
-        public TicketOffice(ITrainDataService trainDataService, IProvideBookingReference bookingReferenceService)
+        public TicketOffice(IProvideTrainTopology provideTrainTopology, IBuildReservation buildReservation,
+            IProvideBookingReference bookingReferenceService)
         {
-            _trainDataService = trainDataService;
+            _provideTrainTopology = provideTrainTopology;
+            _buildReservation = buildReservation;
             _bookingReferenceService = bookingReferenceService;
         }
 
         public async Task<Reservation> Reserve(TrainId trainId, SeatsRequested seatsRequested)
         {
-            var train = await _trainDataService.GetTrain(trainId);
+            var train = await _provideTrainTopology.GetTrain(trainId);
 
             if (train.DoesNotExceedOverallCapacity(seatsRequested))
             {
@@ -26,7 +29,7 @@ namespace TrainTrain.Domain
                 {
                     var bookingReference = await _bookingReferenceService.GetBookingReference();
 
-                    return await _trainDataService.BookSeats(
+                    return await _buildReservation.BookSeats(
                         reservationAttempt.AssignBookingReference(bookingReference));
                 }
             }

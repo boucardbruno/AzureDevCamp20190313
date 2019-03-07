@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TrainTrain.Domain;
+using TrainTrain.Domain.Port;
 using TrainTrain.Infra.Adapter;
 
 namespace TrainTrain.Api
@@ -23,8 +24,10 @@ namespace TrainTrain.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var ticketOffice = new TicketOffice(
-                new TrainDataServiceAdapter(UriTrainDataService), 
+            var trainDataServiceAdapter = new TrainDataServiceAdapter(UriTrainDataService);
+
+            var ticketOffice = new TicketOffice((IProvideTrainTopology)trainDataServiceAdapter,
+                (IBuildReservation)trainDataServiceAdapter, 
                 new BookingReferenceServiceAdapter(UriBookingReferenceService));
 
             var seatsReservationAdapter = new SeatsReservationAdapter(ticketOffice);
