@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TrainTrain.Domain;
-using TrainTrain.Domain.Port;
 using TrainTrain.Infra.Adapter;
 
 namespace TrainTrain.Api
@@ -14,20 +12,13 @@ namespace TrainTrain.Api
         private const string UriTrainDataService = "http://localhost:50680";
         private const string UriBookingReferenceService = "http://localhost:51691/";
 
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var trainDataServiceAdapter = new TrainDataServiceAdapter(UriTrainDataService);
 
-            var ticketOffice = new TicketOffice((IProvideTrainTopology)trainDataServiceAdapter,
-                (IBuildReservation)trainDataServiceAdapter, 
+            var ticketOffice = new TicketOffice(trainDataServiceAdapter,
+                trainDataServiceAdapter, 
                 new BookingReferenceServiceAdapter(UriBookingReferenceService));
 
             var seatsReservationAdapter = new SeatsReservationAdapter(ticketOffice);

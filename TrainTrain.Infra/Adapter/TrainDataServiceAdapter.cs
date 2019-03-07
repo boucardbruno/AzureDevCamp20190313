@@ -10,7 +10,7 @@ using TrainTrain.Domain.Port;
 
 namespace TrainTrain.Infra.Adapter
 {
-    public class TrainDataServiceAdapter :IProvideTrainTopology, IBuildReservation
+    public class TrainDataServiceAdapter :IProvideTrainTopology, IProvideReservation
     {
         private readonly string _uriTrainDataService;
 
@@ -48,6 +48,7 @@ namespace TrainTrain.Infra.Adapter
                 HttpContent resJson = new StringContent(
                     BuildPostContent(reservationAttempt.TrainId.Id, reservationAttempt.BookingReference.Id, reservationAttempt.Seats), Encoding.UTF8,
                     "application/json");
+
                 var response = await client.PostAsync("reserve", resJson);
 
                 response.EnsureSuccessStatusCode();
@@ -56,29 +57,17 @@ namespace TrainTrain.Infra.Adapter
             }
         }
 
-        private static string BuildPostContent(string trainId, string bookingRef, IEnumerable<Seat> availableSeats)
+        private static string BuildPostContent(string trainId, string bookingRef, IEnumerable<Seat> seats)
         {
-            var seats = new StringBuilder("[");
-            bool firstTime = true;
+            return $"{{\r\n\t\"train_id\": \"{trainId}\",\r\n\t\"seats\": {AdaptSeats(seats)},\r\n\t\"booking_reference\": \"{bookingRef}\"\r\n}}";
+        }
 
-            foreach (var s in availableSeats)
-            {
-                if (!firstTime)
-                {
-                    seats.Append(", ");
-                }
-                else
-                {
-                    firstTime = false;
-                }
-
-                seats.Append($"\"{s.SeatNumber}{s.CoachName}\"");
-            }
-            seats.Append("]");
-
-            var result = $"{{\r\n\t\"train_id\": \"{trainId}\",\r\n\t\"seats\": {seats},\r\n\t\"booking_reference\": \"{bookingRef}\"\r\n}}";
-
-            return result;
+        private static string AdaptSeats(IEnumerable<Seat> seats)
+        {
+            var jsonSeats = new StringBuilder("[");
+            jsonSeats.Append(string.Join(", ", seats));
+            jsonSeats.Append("]");
+            return jsonSeats.ToString();
         }
 
         public static Dictionary<string, Coach> AdaptTrainTopology(string trainTopology)
@@ -96,13 +85,13 @@ namespace TrainTrain.Infra.Adapter
 
                 foreach (var stuff in allStuffs)
                 {
-                    var seatPoco = stuff.Value.ToObject<SeatJsonPoco>();
-                    var seat = new Seat(seatPoco.coach, int.Parse(seatPoco.seat_number), new BookingReference(seatPoco.booking_reference));
-                    if (!coaches.ContainsKey(seatPoco.coach))
+                    var jsonSeat = stuff.Value.ToObject<SeatJsonPoco>();
+                    var seat = new Seat(jsonSeat.coach, int.Parse(jsonSeat.seat_number), new BookingReference(jsonSeat.booking_reference));
+                    if (!coaches.ContainsKey(jsonSeat.coach))
                     {
-                        coaches[seatPoco.coach] = new Coach(seatPoco.coach);
+                        coaches[jsonSeat.coach] = new Coach(jsonSeat.coach);
                     }
-                    coaches[seatPoco.coach]  = coaches[seatPoco.coach].AddSeat(seat);
+                    coaches[jsonSeat.coach]  = coaches[jsonSeat.coach].AddSeat(seat);
                 }
             }
             return coaches;

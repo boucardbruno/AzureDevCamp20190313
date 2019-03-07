@@ -3,18 +3,18 @@ using TrainTrain.Domain.Port;
 
 namespace TrainTrain.Domain
 {
-    public class TicketOffice : IProvideReservation
+    public class TicketOffice : IProvideTicket
     {
         private readonly IProvideTrainTopology _provideTrainTopology;
-        private readonly IBuildReservation _buildReservation;
-        private readonly IProvideBookingReference _bookingReferenceService;
+        private readonly IProvideReservation _provideReservation;
+        private readonly IProvideBookingReference _provideBookingReference;
 
-        public TicketOffice(IProvideTrainTopology provideTrainTopology, IBuildReservation buildReservation,
-            IProvideBookingReference bookingReferenceService)
+        public TicketOffice(IProvideTrainTopology provideTrainTopology, IProvideReservation provideReservation,
+            IProvideBookingReference provideBookingReference)
         {
             _provideTrainTopology = provideTrainTopology;
-            _buildReservation = buildReservation;
-            _bookingReferenceService = bookingReferenceService;
+            _provideReservation = provideReservation;
+            _provideBookingReference = provideBookingReference;
         }
 
         public async Task<Reservation> Reserve(TrainId trainId, SeatsRequested seatsRequested)
@@ -27,9 +27,9 @@ namespace TrainTrain.Domain
 
                 if (reservationAttempt.IsFulFilled)
                 {
-                    var bookingReference = await _bookingReferenceService.GetBookingReference();
+                    var bookingReference = await _provideBookingReference.GetBookingReference();
 
-                    return await _buildReservation.BookSeats(
+                    return await _provideReservation.BookSeats(
                         reservationAttempt.AssignBookingReference(bookingReference));
                 }
             }

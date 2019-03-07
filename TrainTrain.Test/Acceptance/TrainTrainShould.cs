@@ -22,7 +22,7 @@ namespace TrainTrain.Test.Acceptance
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
             var provideReservation = BuildMakeReservation(_trainId, _bookingReference, new Seat[] { new Seat("A", 1), new Seat("A", 2), new Seat("A", 3)});
 
-            IProvideReservation ticketOffice = new TicketOffice(provideTrainTopology, provideReservation, bookingReferenceService);
+            IProvideTicket ticketOffice = new TicketOffice(provideTrainTopology, provideReservation, bookingReferenceService);
             var seatsReservationAdapter = new SeatsReservationAdapter(ticketOffice);
             var jsonReservation = seatsReservationAdapter.ReserveAsync(_trainId.Id, seatsRequestedCount.Count).Result;
 
@@ -86,10 +86,10 @@ namespace TrainTrain.Test.Acceptance
             return trainDataService;
         }
 
-        private static IBuildReservation BuildMakeReservation(TrainId trainId,
+        private static IProvideReservation BuildMakeReservation(TrainId trainId,
             BookingReference bookingReference, params Seat[] seats)
         {
-            var trainDataService = Substitute.For<IBuildReservation>();
+            var trainDataService = Substitute.For<IProvideReservation>();
 
             trainDataService.BookSeats(Arg.Any<ReservationAttempt>())
                 .Returns(Task.FromResult(new Reservation(trainId, bookingReference, seats)));

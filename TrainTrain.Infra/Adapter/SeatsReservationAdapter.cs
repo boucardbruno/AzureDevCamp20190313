@@ -8,9 +8,9 @@ namespace TrainTrain.Infra.Adapter
 {
     public class SeatsReservationAdapter
     {
-        private readonly IProvideReservation _ticketOffice;
+        private readonly IProvideTicket _ticketOffice;
 
-        public SeatsReservationAdapter(IProvideReservation ticketOffice)
+        public SeatsReservationAdapter(IProvideTicket ticketOffice)
         {
             _ticketOffice = ticketOffice;
         }
@@ -23,31 +23,14 @@ namespace TrainTrain.Infra.Adapter
 
         public static string AdaptReservation(Reservation reservation)
         {
-            return
-                $"{{\"train_id\": \"{reservation.TrainId}\", \"booking_reference\": \"{reservation.BookingReference}\", \"seats\": {DumpSeats(reservation.Seats)}}}";
+            return $"{{\"train_id\": \"{reservation.TrainId}\", \"booking_reference\": \"{reservation.BookingReference}\", \"seats\": {AdaptSeats(reservation.Seats)}}}";
         }
 
-        private static string DumpSeats(IEnumerable<Seat> seats)
+        private static string AdaptSeats(IEnumerable<Seat> seats)
         {
             var sb = new StringBuilder("[");
-
-            var firstTime = true;
-            foreach (var seat in seats)
-            {
-                if (!firstTime)
-                {
-                    sb.Append(", ");
-                }
-                else
-                {
-                    firstTime = false;
-                }
-
-                sb.Append($"\"{seat.SeatNumber}{seat.CoachName}\"");
-            }
-
+            sb.Append(string.Join(", ", seats));
             sb.Append("]");
-
             return sb.ToString();
         }
     }

@@ -25,6 +25,11 @@ namespace TrainTrain.Domain
             return !BookingReference.IsValid();
         }
 
+        public override string ToString()
+        {
+            return $"\"{SeatNumber}{CoachName}\"";
+        }
+
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
             return new object[] {CoachName, SeatNumber, BookingReference};
