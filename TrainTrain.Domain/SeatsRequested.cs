@@ -14,7 +14,8 @@ namespace TrainTrain.Domain
         public SeatsRequested(int seatRequestCount)
         {
             if (seatRequestCount <= MinRequested || seatRequestCount > MaxRequested)
-                throw new ArgumentException($"{nameof(seatRequestCount)}({seatRequestCount}) should be between {MinRequested} and {MaxRequested}");
+                throw new ArgumentException(
+                    $"{nameof(seatRequestCount)}({seatRequestCount}) should be between {MinRequested} and {MaxRequested}");
 
             Count = seatRequestCount;
         }

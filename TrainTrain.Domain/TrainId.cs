@@ -25,7 +25,8 @@ namespace TrainTrain.Domain
             }
             catch (Exception exception)
             {
-                throw new ArgumentException($"{nameof(id)} should be formatted like TrainNumber[4]-yyyy-MM-dd", exception);
+                throw new ArgumentException($"{nameof(id)} should be formatted like TrainNumber[4]-yyyy-MM-dd",
+                    exception);
             }
         }
 
