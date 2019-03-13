@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Value;
 
@@ -9,6 +10,11 @@ namespace TrainTrain.Domain
         private readonly List<Seat> _seats;
         public IReadOnlyCollection<Seat> Seats => _seats;
         private string Name { get; }
+
+        private int NumberOfReservedSeats
+        {
+            get { return Seats.Count(s => !s.IsAvailable()); }
+        }
 
         public Coach(string name) : this(name, new List<Seat>())
         {
@@ -37,6 +43,12 @@ namespace TrainTrain.Domain
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
             return new object[] {Name, new ListByValue<Seat>(_seats)};
+        }
+
+        public bool DoesNotExceedOverallCapacity(SeatsRequested seatsRequested)
+        {
+            return NumberOfReservedSeats + seatsRequested.Count <=
+                   Math.Floor(CapacityThresholdPolicy.ForCoach * Seats.Count);
         }
     }
 }

@@ -12,6 +12,8 @@ namespace TrainTrain.Domain
         public BookingReference BookingReference { get; }
         private SeatsRequested SeatsRequested { get; }
 
+        public bool IsFulFilled => Seats.Count == SeatsRequested.Count;
+
         public ReservationAttempt(TrainId trainId, SeatsRequested seatsRequestedCount, IEnumerable<Seat> seats)
             : this(trainId, new BookingReference(), seatsRequestedCount, seats)
         {
@@ -25,8 +27,6 @@ namespace TrainTrain.Domain
             SeatsRequested = seatsRequestedCount;
             _seats = seats.ToList();
         }
-
-        public bool IsFulFilled => Seats.Count == SeatsRequested.Count;
 
         // DDD Pattern: Closure Of Operation
         public ReservationAttempt AssignBookingReference(BookingReference bookingReference)

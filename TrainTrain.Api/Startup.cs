@@ -16,10 +16,11 @@ namespace TrainTrain.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var trainDataServiceAdapter = new TrainDataServiceAdapter(UriTrainDataService);
+            var bookingReferenceServiceAdapter = new BookingReferenceServiceAdapter(UriBookingReferenceService);
 
-            var ticketOffice = new TicketOffice(trainDataServiceAdapter,
+            var ticketOffice = new TicketOfficeService(trainDataServiceAdapter,
                 trainDataServiceAdapter, 
-                new BookingReferenceServiceAdapter(UriBookingReferenceService));
+                bookingReferenceServiceAdapter);
 
             var seatsReservationAdapter = new SeatsReservationAdapter(ticketOffice);
             services.AddSingleton(seatsReservationAdapter);

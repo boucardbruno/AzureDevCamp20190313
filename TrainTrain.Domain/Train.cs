@@ -13,13 +13,6 @@ namespace TrainTrain.Domain
 
         public IReadOnlyDictionary<string, Coach> Coaches => _coaches;
 
-
-        public Train(TrainId trainId, Dictionary<string, Coach> coaches)
-        {
-            TrainId = trainId;
-            _coaches = coaches;
-        }
-
         private int NumberOfReservedSeats
         {
             get { return Seats.Count(s => !s.IsAvailable()); }
@@ -30,19 +23,47 @@ namespace TrainTrain.Domain
             get { return Coaches.Values.SelectMany(c => c.Seats).ToList(); }
         }
 
+
+        public Train(TrainId trainId, Dictionary<string, Coach> coaches)
+        {
+            TrainId = trainId;
+            _coaches = coaches;
+        }
+
         public bool DoesNotExceedOverallCapacity(SeatsRequested seatsRequested)
         {
-            return NumberOfReservedSeats + seatsRequested.Count <= Math.Floor(CapacityThreshold.ForTrain * Seats.Count);
+            return NumberOfReservedSeats + seatsRequested.Count <=
+                   Math.Floor(CapacityThresholdPolicy.ForTrain * Seats.Count);
         }
 
         public ReservationAttempt BuildReservationAttempt(SeatsRequested seatsRequested)
         {
+            var attemptInTheSameCoach = BuildReservationAttemptInTheSameCoach(seatsRequested);
+
+            if (attemptInTheSameCoach.IsFulFilled)
+            {
+                return attemptInTheSameCoach;
+            }
+
+            return BuildReservationAttemptForOverallTrainCapacity(seatsRequested);
+        }
+
+        private ReservationAttempt BuildReservationAttemptForOverallTrainCapacity(SeatsRequested seatsRequested)
+        {
+            return new ReservationAttempt(TrainId, seatsRequested, Seats
+                .Where(s => s.IsAvailable()).Take(seatsRequested.Count));
+        }
+
+        private ReservationAttempt BuildReservationAttemptInTheSameCoach(SeatsRequested seatsRequested)
+        {
             foreach (var coach in Coaches.Values)
             {
-                var reservationAttempt = coach.BuildReservationAttempt(TrainId, seatsRequested);
+                if (coach.DoesNotExceedOverallCapacity(seatsRequested))
+                {
+                    var reservationAttempt = coach.BuildReservationAttempt(TrainId, seatsRequested);
 
-                if (reservationAttempt.IsFulFilled)
-                    return reservationAttempt;
+                    if (reservationAttempt.IsFulFilled) return reservationAttempt;
+                }
             }
 
             return new ReservationAttemptFailure(TrainId, seatsRequested);

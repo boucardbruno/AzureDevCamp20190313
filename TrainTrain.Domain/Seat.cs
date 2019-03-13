@@ -9,15 +9,15 @@ namespace TrainTrain.Domain
         public int SeatNumber { get; }
         private BookingReference BookingReference { get; }
 
+        public Seat(string coachName, int seatNumber) : this(coachName, seatNumber, new BookingReference())
+        {
+        }
+
         public Seat(string coachName, int seatNumber, BookingReference bookingReference)
         {
             CoachName = coachName;
             SeatNumber = seatNumber;
             BookingReference = bookingReference;
-        }
-
-        public Seat(string coachName, int seatNumber) : this(coachName, seatNumber, new BookingReference())
-        {
         }
 
         public bool IsAvailable()

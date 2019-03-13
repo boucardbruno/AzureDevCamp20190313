@@ -6,8 +6,8 @@ namespace TrainTrain.Domain
 {
     public class BookingReference : ValueType<BookingReference>
     {
-        public string Id { get; }
         public const int MaxLength = 7;
+        public string Id { get; }
 
         public BookingReference() : this(string.Empty)
         {
@@ -17,7 +17,7 @@ namespace TrainTrain.Domain
         {
             if (!string.IsNullOrEmpty(id) && id.Length > MaxLength)
             {
-                throw new ArgumentException($"id should be between {MaxLength}");
+                throw new ArgumentException($"{nameof(id)} length should less than {MaxLength}");
             }
 
             Id = id;

@@ -22,8 +22,10 @@ namespace TrainTrain.Test.Unit
             Check.That(SeatsRequested.MinRequested).IsEqualTo(1);
             Check.That(SeatsRequested.MaxRequested).IsEqualTo(20);
 
-            Check.ThatCode(() => new SeatsRequested(SeatsRequested.MinRequested -1)).Throws<ArgumentException>();
-            Check.ThatCode(() => new SeatsRequested(SeatsRequested.MaxRequested +1)).Throws<ArgumentException>();
+            Check.ThatCode(() => new SeatsRequested(SeatsRequested.MinRequested -1)).Throws<ArgumentException>()
+                .WithMessage($"seatRequestCount({SeatsRequested.MinRequested - 1}) should be between 1 and 20");
+            Check.ThatCode(() => new SeatsRequested(SeatsRequested.MaxRequested +1)).Throws<ArgumentException>()
+                .WithMessage($"seatRequestCount({SeatsRequested.MaxRequested + 1}) should be between 1 and 20");
         }
     }
 }

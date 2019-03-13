@@ -12,14 +12,21 @@ namespace TrainTrain.Domain
 
         public TrainId(string id)
         {
-            var tokens = id.Split("-");
-
-            if (tokens[0].Length == 4)
+            try
             {
-                TrainNumber = tokens[0];
-            }
+                var tokens = id.Split("-");
 
-            Date = new DateTime(int.Parse(tokens[1]), int.Parse(tokens[2]), int.Parse(tokens[3]));
+                if (tokens[0].Length == 4)
+                {
+                    TrainNumber = tokens[0];
+                }
+
+                Date = new DateTime(int.Parse(tokens[1]), int.Parse(tokens[2]), int.Parse(tokens[3]));
+            }
+            catch (Exception exception)
+            {
+                throw new ArgumentException($"{nameof(id)} should be formatted like TrainNumber[4]-yyyy-MM-dd", exception);
+            }
         }
 
         public override string ToString()
