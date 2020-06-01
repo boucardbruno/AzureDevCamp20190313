@@ -6,14 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TrainTrain.Domain;
 
-namespace TrainTrain
+namespace TrainTrain.Infra
 {
     public class TrainDataServiceAdapter : ITrainDataService
     {
         private readonly string _uriTrainDataService;
 
-        public async Task<Train> GetTrain(string trainId)
+        public async Task<Train> GetTrain(TrainId trainId)
         {
             using (var client = new HttpClient())
             {
@@ -40,7 +41,7 @@ namespace TrainTrain
 
                 // HTTP POST
                 HttpContent resJson = new StringContent(
-                    BuildPostContent(reservationAttempt.TrainId, reservationAttempt.BookingReference,
+                    BuildPostContent(reservationAttempt.TrainId.Id, reservationAttempt.BookingReference,
                         reservationAttempt.Seats), Encoding.UTF8,
                     "application/json");
                 var response = await client.PostAsync("reserve", resJson);

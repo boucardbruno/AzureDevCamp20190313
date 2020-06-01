@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Value;
 
-namespace TrainTrain
+namespace TrainTrain.Domain
 {
     public class Reservation : ValueType<Reservation>
     {
-        public string TrainId { get; }
+        public TrainId TrainId { get; }
         public string BookingReference { get; }
         public List<Seat> Seats { get; }
 
-        public Reservation(string trainId, string bookingReference, List<Seat> seats)
+        public Reservation(TrainId trainId, string bookingReference, List<Seat> seats)
         {
             TrainId = trainId;
             BookingReference = bookingReference;

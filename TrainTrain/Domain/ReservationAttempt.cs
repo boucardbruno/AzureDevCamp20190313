@@ -2,28 +2,28 @@
 using System.Linq;
 using Value;
 
-namespace TrainTrain
+namespace TrainTrain.Domain
 {
     public class ReservationAttempt : ValueType<ReservationAttempt>
     {
-        public string TrainId { get; }
+        public TrainId TrainId { get; }
         public List<Seat> Seats { get; }
-        private int SeatsRequestedCount { get; }
+        private SeatsRequested SeatsRequested { get; }
         public string BookingReference => Seats.First().BookingRef;
 
-        public bool IsFulFilled => Seats.Count == SeatsRequestedCount;
+        public bool IsFulFilled => Seats.Count == SeatsRequested.Count;
 
-        public ReservationAttempt(string trainId, int seatsRequestedCount, IEnumerable<Seat> seats)
+        public ReservationAttempt(TrainId trainId, SeatsRequested seatsRequested, IEnumerable<Seat> seats)
         {
             TrainId = trainId;
-            SeatsRequestedCount = seatsRequestedCount;
+            SeatsRequested = seatsRequested;
             Seats = seats.ToList();
         }
 
         public ReservationAttempt AssignBookingReference(string bookingReference)
         {
             var seats = Seats.Select(seat => new Seat(seat.CoachName, seat.SeatNumber, bookingReference)).ToList();
-            return new ReservationAttempt(TrainId, SeatsRequestedCount, seats);
+            return new ReservationAttempt(TrainId, SeatsRequested, seats);
         }
 
         public Reservation Confirm()
@@ -33,7 +33,7 @@ namespace TrainTrain
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] {TrainId, SeatsRequestedCount, new ListByValue<Seat>(Seats)};
+            return new object[] {TrainId, SeatsRequested, new ListByValue<Seat>(Seats)};
         }
     }
 }

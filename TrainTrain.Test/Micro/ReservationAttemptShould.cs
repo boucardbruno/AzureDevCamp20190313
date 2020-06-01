@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NFluent;
 using NUnit.Framework;
+using TrainTrain.Domain;
 
 namespace TrainTrain.Test.Micro
 {
@@ -12,14 +13,14 @@ namespace TrainTrain.Test.Micro
         [Test]
         public void Be_equal_by_value()
         {
-            var reservationAttempt1 = new ReservationAttempt(TrainId, 3, new List<Seat>()
+            var reservationAttempt1 = new ReservationAttempt(new TrainId(TrainId), new SeatsRequested(3), new List<Seat>()
             {
                 new Seat("A", 1, BookingReference),
                 new Seat("A", 2, BookingReference),
                 new Seat("A", 3, BookingReference)
             });
 
-            var reservationAttempt2 = new ReservationAttempt(TrainId, 3, new List<Seat>()
+            var reservationAttempt2 = new ReservationAttempt(new TrainId(TrainId), new SeatsRequested(3), new List<Seat>()
             {
                 new Seat("A", 1, BookingReference),
                 new Seat("A", 2, BookingReference),
@@ -28,9 +29,9 @@ namespace TrainTrain.Test.Micro
 
             Check.That(reservationAttempt1).IsEqualTo(reservationAttempt2);
 
-            var reservationAttemptFailure1 = new ReservationAttemptFailure(TrainId, 3);
+            var reservationAttemptFailure1 = new ReservationAttemptFailure(new TrainId(TrainId), new SeatsRequested(3));
 
-            var reservationAttemptFailure2 = new ReservationAttemptFailure(TrainId, 3);
+            var reservationAttemptFailure2 = new ReservationAttemptFailure(new TrainId(TrainId), new SeatsRequested(3));
 
             Check.That(reservationAttemptFailure1).IsEqualTo(reservationAttemptFailure2);
         }

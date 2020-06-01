@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NFluent;
 using NUnit.Framework;
+using TrainTrain.Domain;
 
 namespace TrainTrain.Test.Micro
 {
@@ -13,14 +14,14 @@ namespace TrainTrain.Test.Micro
         [Test]
         public void Be_equal_by_value()
         {
-            var reservation1 = new Reservation(TrainId, BookingReference, new List<Seat>()
+            var reservation1 = new Reservation(new TrainId(TrainId), BookingReference, new List<Seat>()
             {
                 new Seat("A", 1, BookingReference),
                 new Seat("A", 2, BookingReference),
                 new Seat("A", 3, BookingReference)
             });
 
-            var reservation2 = new Reservation(TrainId, BookingReference, new List<Seat>()
+            var reservation2 = new Reservation(new TrainId(TrainId), BookingReference, new List<Seat>()
             {
                 new Seat("A", 1, BookingReference),
                 new Seat("A", 2, BookingReference),

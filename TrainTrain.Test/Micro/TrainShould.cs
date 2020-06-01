@@ -1,5 +1,7 @@
 ﻿using NFluent;
 using NUnit.Framework;
+using TrainTrain.Domain;
+using TrainTrain.Infra;
 using TrainTrain.Test.Acceptance;
 
 namespace TrainTrain.Test.Micro
@@ -11,9 +13,9 @@ namespace TrainTrain.Test.Micro
         [Test]
         public void Be_equal_by_value()
         {
-            var train1 = new Train(TrainId,
+            var train1 = new Train(new TrainId(TrainId),
                 TrainDataServiceAdapter.AdaptTrainTopology(TrainTopologyGenerator.With_10_available_seats()));
-            var train2 = new Train(TrainId,
+            var train2 = new Train(new TrainId(TrainId),
                 TrainDataServiceAdapter.AdaptTrainTopology(TrainTopologyGenerator.With_10_available_seats()));
 
             Check.That(train1).IsEqualTo(train2);

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Value;
 
-namespace TrainTrain
+namespace TrainTrain.Domain
 {
     public class Seat : ValueType<Seat>
     {

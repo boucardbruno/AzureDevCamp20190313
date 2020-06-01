@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace TrainTrain
+namespace TrainTrain.Domain
 {
     public class ReservationAttemptFailure : ReservationAttempt
     {
-        public ReservationAttemptFailure(string trainId, int seatsRequestedCount) : base(trainId, seatsRequestedCount,
+        public ReservationAttemptFailure(TrainId trainId, SeatsRequested seatsRequested) : base(trainId, seatsRequested,
             new List<Seat>())
         {
         }

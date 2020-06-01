@@ -2,19 +2,19 @@
 using System.Linq;
 using Value;
 
-namespace TrainTrain
+namespace TrainTrain.Domain
 {
     public class Coach : ValueType<Coach>
     {
         public List<Seat> Seats { get; }
-        private string TrainId { get; }
+        private TrainId TrainId { get; }
         private string Name { get; }
 
-        public Coach(string trainId, string name) : this(trainId, name, new List<Seat>())
+        public Coach(TrainId trainId, string name) : this(trainId, name, new List<Seat>())
         {
         }
 
-        private Coach(string trainId, string name, List<Seat> seats)
+        private Coach(TrainId trainId, string name, List<Seat> seats)
         {
             TrainId = trainId;
             Name = name;
@@ -26,10 +26,10 @@ namespace TrainTrain
             return new Coach(TrainId, Name, new List<Seat>(Seats) {seat});
         }
 
-        public ReservationAttempt BuildReservationAttempt(int seatsRequestedCount)
+        public ReservationAttempt BuildReservationAttempt(SeatsRequested seatsRequested)
         {
-            var availableSeats = Seats.Where(s => s.IsAvailable).Take(seatsRequestedCount);
-            return new ReservationAttempt(TrainId, seatsRequestedCount, availableSeats);
+            var availableSeats = Seats.Where(s => s.IsAvailable).Take(seatsRequested.Count);
+            return new ReservationAttempt(TrainId, seatsRequested, availableSeats);
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()

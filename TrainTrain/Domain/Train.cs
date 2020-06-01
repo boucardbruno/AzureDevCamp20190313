@@ -4,11 +4,11 @@ using System.Linq;
 using Value;
 using Value.Shared;
 
-namespace TrainTrain
+namespace TrainTrain.Domain
 {
     public class Train : ValueType<Train>
     {
-        public string TrainId { get; }
+        public TrainId TrainId { get; }
         public Dictionary<string, Coach> Coaches { get; } = new Dictionary<string, Coach>();
 
         public List<Seat> Seats
@@ -24,7 +24,7 @@ namespace TrainTrain
         private int MaxSeats => Seats.Count;
 
 
-        public Train(string trainId, IEnumerable<Seat> seats)
+        public Train(TrainId trainId, IEnumerable<Seat> seats)
         {
             TrainId = trainId;
             foreach (var seat in seats)
@@ -34,25 +34,25 @@ namespace TrainTrain
             }
         }
 
-        public bool DoesNotExceedOverallTrainCapacity(int seatsRequestedCount)
+        public bool DoesNotExceedOverallTrainCapacity(SeatsRequested seatsRequested)
         {
-            return ReservedSeats + seatsRequestedCount <= Math.Floor(ThresholdReservation.MaxCapacity * MaxSeats);
+            return ReservedSeats + seatsRequested.Count <= Math.Floor(ThresholdReservation.MaxCapacity * MaxSeats);
         }
 
-        public ReservationAttempt BuildReservationAttempt(int seatsRequestedCount)
+        public ReservationAttempt BuildReservationAttempt(SeatsRequested seatsRequested)
         {
             foreach (var coachName in Coaches.Keys)
             {
-                var reservationAttempt = Coaches[coachName].BuildReservationAttempt(seatsRequestedCount);
+                var reservationAttempt = Coaches[coachName].BuildReservationAttempt(seatsRequested);
                 if (reservationAttempt.IsFulFilled) return reservationAttempt;
             }
 
-            return new ReservationAttemptFailure(TrainId, seatsRequestedCount);
+            return new ReservationAttemptFailure(TrainId, seatsRequested);
         }
 
         protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return new object[] {TrainId, new DictionaryByValue<string, Coach>(Coaches)};
+            return new object[] {TrainId.Id, new DictionaryByValue<string, Coach>(Coaches)};
         }
     }
 }

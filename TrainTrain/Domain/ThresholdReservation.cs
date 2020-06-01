@@ -1,4 +1,4 @@
-namespace TrainTrain
+namespace TrainTrain.Domain
 {
     public static class ThresholdReservation
     {
