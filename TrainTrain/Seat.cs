@@ -1,10 +1,15 @@
-﻿namespace TrainTrain
+﻿using System.Collections.Generic;
+using Value;
+
+namespace TrainTrain
 {
-    public class Seat
+    public class Seat : ValueType<Seat>
     {
         public string CoachName { get; }
         public int SeatNumber { get; }
-        public string BookingRef { get; set;  }
+        public string BookingRef { get; }
+
+        public bool IsAvailable => BookingRef == string.Empty;
 
         public Seat(string coachName, int seatNumber, string bookingRef)
         {
@@ -13,9 +18,9 @@
             BookingRef = bookingRef;
         }
 
-        public bool IsAvailable()
+        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
         {
-            return BookingRef == "";
+            return new object[] {CoachName, SeatNumber, BookingRef};
         }
     }
 }

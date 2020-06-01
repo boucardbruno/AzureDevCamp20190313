@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Value;
 
 namespace TrainTrain
 {
-    public class Reservation
+    public class Reservation : ValueType<Reservation>
     {
         public string TrainId { get; }
         public string BookingReference { get; }
@@ -13,6 +14,11 @@ namespace TrainTrain
             TrainId = trainId;
             BookingReference = bookingReference;
             Seats = seats;
+        }
+
+        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
+        {
+            return new object[] {TrainId, BookingReference, new ListByValue<Seat>(Seats)};
         }
     }
 }

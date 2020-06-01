@@ -9,11 +9,6 @@ namespace TrainTrain
     {
         private readonly string _uriBookingReferenceService;
 
-        public BookingReferenceServiceAdapter(string uriBookingReferenceService)
-        {
-            _uriBookingReferenceService = uriBookingReferenceService;
-        }
-
         public async Task<string> GetBookingReference()
         {
             using (var client = new HttpClient())
@@ -28,6 +23,11 @@ namespace TrainTrain
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsStringAsync();
             }
+        }
+
+        public BookingReferenceServiceAdapter(string uriBookingReferenceService)
+        {
+            _uriBookingReferenceService = uriBookingReferenceService;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace TrainTrain.Test.Acceptance
 {
     public class TrainTrainShould
     {
-        private const string TrainId = "9043-2019-03-13";
+        private const string TrainId = "9043-2020-11-13";
         private const string BookingReference = "75bcd15";
 
         [Test]
@@ -56,7 +56,6 @@ namespace TrainTrain.Test.Acceptance
         }
 
         [Test]
-        [Ignore("While refactoring")]
         public void Reserve_all_seats_in_the_same_coach()
         {
             const int seatsRequestedCount = 2;

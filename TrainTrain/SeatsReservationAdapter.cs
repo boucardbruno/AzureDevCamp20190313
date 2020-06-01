@@ -19,13 +19,9 @@ namespace TrainTrain
             foreach (var seat in seats)
             {
                 if (!firstTime)
-                {
                     sb.Append(", ");
-                }
                 else
-                {
                     firstTime = false;
-                }
 
                 sb.Append($"\"{seat.SeatNumber}{seat.CoachName}\"");
             }

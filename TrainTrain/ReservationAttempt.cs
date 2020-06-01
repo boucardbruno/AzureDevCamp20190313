@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Value;
 
 namespace TrainTrain
 {
-    public class ReservationAttempt
+    public class ReservationAttempt : ValueType<ReservationAttempt>
     {
         public string TrainId { get; }
         public List<Seat> Seats { get; }
-        public string BookingReference { get; private set; }
-        public int SeatsRequestedCount { get; }
+        private int SeatsRequestedCount { get; }
+        public string BookingReference => Seats.First().BookingRef;
+
+        public bool IsFulFilled => Seats.Count == SeatsRequestedCount;
 
         public ReservationAttempt(string trainId, int seatsRequestedCount, IEnumerable<Seat> seats)
         {
@@ -17,23 +20,20 @@ namespace TrainTrain
             Seats = seats.ToList();
         }
 
-        public bool IsFulFilled()
+        public ReservationAttempt AssignBookingReference(string bookingReference)
         {
-            return Seats.Count == SeatsRequestedCount;
-        }
-
-        public void AssignBookingReference(string bookingReference)
-        {
-            BookingReference = bookingReference;
-            foreach (var seat in Seats)
-            {
-                seat.BookingRef = bookingReference;
-            }
+            var seats = Seats.Select(seat => new Seat(seat.CoachName, seat.SeatNumber, bookingReference)).ToList();
+            return new ReservationAttempt(TrainId, SeatsRequestedCount, seats);
         }
 
         public Reservation Confirm()
         {
             return new Reservation(TrainId, BookingReference, Seats);
+        }
+
+        protected override IEnumerable<object> GetAllAttributesToBeUsedForEquality()
+        {
+            return new object[] {TrainId, SeatsRequestedCount, new ListByValue<Seat>(Seats)};
         }
     }
 }
