@@ -1,7 +1,42 @@
+using System.Text;
+
 namespace TrainTrain.Test.Acceptance
 {
     public static class TrainTopologyGenerator
     {
+        public static string With_n_seats_and_m_already_reserved(int seatCount, int coachCount, int reserved = 0, string bookingReference = "", int coachNumberWithCoachAlreadyReserved = 1)
+        {
+
+            var result = new StringBuilder();
+            result.AppendLine("{\"seats\": {");
+
+            for (var coachIndex = 0; coachIndex < coachCount; coachIndex++)
+            {
+                var coachNumber = (char)('A' + coachIndex);
+                result.Append(BuildFormattedLine(coachNumber, seatCount, ref reserved, bookingReference, (coachIndex + 1 == coachNumberWithCoachAlreadyReserved)));
+            }
+
+            result.Append("}}");
+
+            return result.ToString();
+        }
+
+        private static string BuildFormattedLine(char coachNumber, int seatCount, ref int reserved,
+            string bookingReference, bool reservedCoach)
+        {
+            var result = new StringBuilder();
+            for (var seatNumber = 1; seatNumber <= seatCount; seatNumber++)
+            {
+                var asBookingReference = "";
+                
+                if (reservedCoach)
+                    asBookingReference = reserved-- > 0 ? bookingReference : "";
+
+                result.AppendLine($"\"{seatNumber}{coachNumber}\": {{\"booking_reference\": \"{asBookingReference}\", \"seat_number\": \"{seatNumber}\", \"coach\": \"{coachNumber}\"}},");
+            }
+            return result.ToString();
+        }
+
         public static string With_10_available_seats()
         {
             return "{\"seats\": {" +
@@ -14,7 +49,7 @@ namespace TrainTrain.Test.Acceptance
                    "\"7A\": {\"booking_reference\": \"\", \"seat_number\": \"7\", \"coach\": \"A\"}, " +
                    "\"8A\": {\"booking_reference\": \"\", \"seat_number\": \"8\", \"coach\": \"A\"}, " +
                    "\"9A\": {\"booking_reference\": \"\", \"seat_number\": \"9\", \"coach\": \"A\"}, " +
-                   "\"10A\": {\"booking_reference\": \"\", \"seat_number\": \"10\", \"coach\": \"A\"}}}";
+                   "\"10A\": {\"booking_reference\": \"\", \"seat_number\": \"10\", \"coach\": \"A\"}, }}";
         }
 
         public static string With_10_seats_and_6_already_reserved()
