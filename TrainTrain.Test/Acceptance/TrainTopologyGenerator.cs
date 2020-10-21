@@ -12,13 +12,23 @@ namespace TrainTrain.Test.Acceptance
 
             for (var coachIndex = 0; coachIndex < coachCount; coachIndex++)
             {
-                var coachNumber = (char)('A' + coachIndex);
-                result.Append(BuildFormattedLine(coachNumber, seatCount, ref reserved, bookingReference, (coachIndex + 1 == coachNumberWithCoachAlreadyReserved)));
+                var isReservedCoach = IsReservedCoach(coachNumberWithCoachAlreadyReserved, coachIndex);
+                result.Append(BuildFormattedLine(ToCoachNumber(coachIndex), seatCount, ref reserved, bookingReference, isReservedCoach));
             }
 
             result.Append("}}");
 
             return result.ToString();
+        }
+
+        private static bool IsReservedCoach(int coachNumberWithCoachAlreadyReserved, int coachIndex)
+        {
+            return (coachIndex + 1 == coachNumberWithCoachAlreadyReserved);
+        }
+
+        private static char ToCoachNumber(int coachIndex)
+        {
+            return (char) ('A' + coachIndex);
         }
 
         private static string BuildFormattedLine(char coachNumber, int seatCount, ref int reserved,
