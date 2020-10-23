@@ -6,7 +6,6 @@ namespace TrainTrain.Test.Acceptance
     {
         public static string With_n_seats_and_m_already_reserved(int seatCount, int coachCount, int reserved = 0, string bookingReference = "", int coachNumberWithCoachAlreadyReserved = 1)
         {
-
             var result = new StringBuilder();
             result.AppendLine("{\"seats\": {");
 
