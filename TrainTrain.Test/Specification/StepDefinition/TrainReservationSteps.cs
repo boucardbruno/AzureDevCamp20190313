@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using NFluent;
 using NSubstitute;
@@ -22,11 +24,11 @@ namespace TrainTrain.Test.Specification.StepDefinition
         [Given(@"one coach empty made of (.*) seats")]
         public void GivenOneCoachEmptyMadeOfSeats(int availableSeats)
         {
+            var expectedSeats = "A1, A2, A3";
             var provideTrainTopology = BuildTrainTopology(_trainId,
                 TrainTopologyGenerator.With_n_seats_and_m_already_reserved(availableSeats, 1));
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
-            var provideReservationService = BuildMakeReservation(_trainId, _bookingReference, new Seat("A", 1),
-                new Seat("A", 2), new Seat("A", 3));
+            var provideReservationService = BuildMakeReservation(_trainId, _bookingReference, expectedSeats);
 
             TicketOffice =
                 new TicketOfficeService(provideTrainTopology, provideReservationService, bookingReferenceService);
@@ -39,8 +41,7 @@ namespace TrainTrain.Test.Specification.StepDefinition
                 TrainTopologyGenerator.With_n_seats_and_m_already_reserved(seatsCount, coachesCount,
                     alreadyReservedSeats, _bookingReference.Id));
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
-            var provideReservationService = BuildMakeReservation(_trainId, _bookingReference, new Seat("A", 1),
-                new Seat("A", 2), new Seat("A", 3));
+            var provideReservationService = BuildMakeReservation(_trainId, _bookingReference, "A1, A2, A3");
 
             TicketOffice = new TicketOfficeService(trainTopology, provideReservationService, bookingReferenceService);
         }
@@ -53,7 +54,7 @@ namespace TrainTrain.Test.Specification.StepDefinition
                 TrainTopologyGenerator.With_n_seats_and_m_already_reserved(seatsCount, coachesCount,
                     alreadyReservedSeats, _bookingReference.Id, coachNumber));
             var provideReservationService =
-                BuildMakeReservation(_trainId, _bookingReference, new Seat("B", 1), new Seat("B", 2));
+                BuildMakeReservation(_trainId, _bookingReference, "B1, B2");
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
             TicketOffice =
@@ -100,14 +101,30 @@ namespace TrainTrain.Test.Specification.StepDefinition
         }
 
         private static IProvideReservation BuildMakeReservation(TrainId trainId,
-            BookingReference bookingReference, params Seat[] seats)
+            BookingReference bookingReference, string expectedSeats)
         {
             var trainDataService = Substitute.For<IProvideReservation>();
 
             trainDataService.BookSeats(Arg.Any<ReservationAttempt>())
-                .Returns(new Reservation(trainId, bookingReference, seats));
+                .Returns(new Reservation(trainId, bookingReference, ToSeats(expectedSeats)));
 
             return trainDataService;
+        }
+
+        private static IEnumerable<Seat> ToSeats(string expectedSeats)
+        {
+            var seats = new List<Seat>();
+            foreach (var seatName in expectedSeats.Split(','))
+            {
+                var (coachName, seatNumber) = ToSeat(seatName.Trim());
+                seats.Add(new Seat(coachName, seatNumber));
+            }
+            return seats;
+        }
+
+        private static (string coachName, int seatNumber) ToSeat(string seatAsString)
+        {
+            return (seatAsString[0].ToString(), Convert.ToInt32(seatAsString.Substring(1)));
         }
     }
 }
