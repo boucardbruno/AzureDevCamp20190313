@@ -24,6 +24,7 @@ namespace TrainTrain.Test.Acceptance
 
             IProvideTicket ticketOffice = new TicketOfficeService(provideTrainTopology, provideReservation, bookingReferenceService);
             var seatsReservationAdapter = new SeatsReservationAdapter(ticketOffice);
+
             var jsonReservation = seatsReservationAdapter.ReserveAsync(_trainId.Id, seatsRequestedCount.Count).Result;
 
             Check.That(jsonReservation)
