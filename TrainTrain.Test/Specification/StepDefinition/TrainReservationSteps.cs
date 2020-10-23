@@ -8,7 +8,7 @@ using TrainTrain.Domain.Port;
 using TrainTrain.Infra.Adapter;
 using TrainTrain.Test.Acceptance;
 
-namespace TrainTrain.Test.StepDefinition
+namespace TrainTrain.Test.Automation.StepDefinition
 {
     [Binding]
     public class TrainReservationSteps
