@@ -3,7 +3,7 @@ using NFluent;
 using NUnit.Framework;
 using TrainTrain.Domain;
 
-namespace TrainTrain.Test.Unit
+namespace TrainTrain.Test.TDD.Unit
 {
     internal class CoachShould
     {

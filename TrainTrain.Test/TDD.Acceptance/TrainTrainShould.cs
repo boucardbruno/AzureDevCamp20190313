@@ -6,7 +6,7 @@ using TrainTrain.Domain;
 using TrainTrain.Domain.Port;
 using TrainTrain.Infra.Adapter;
 
-namespace TrainTrain.Test.Acceptance
+namespace TrainTrain.Test.TDD.Acceptance
 {
     public class TrainTrainShould
     {

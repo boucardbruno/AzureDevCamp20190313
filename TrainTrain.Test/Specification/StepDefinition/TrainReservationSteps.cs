@@ -8,7 +8,7 @@ using TechTalk.SpecFlow;
 using TrainTrain.Domain;
 using TrainTrain.Domain.Port;
 using TrainTrain.Infra.Adapter;
-using TrainTrain.Test.Acceptance;
+using TrainTrain.Test.TDD.Acceptance;
 
 namespace TrainTrain.Test.Specification.StepDefinition
 {

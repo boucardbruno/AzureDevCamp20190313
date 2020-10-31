@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace TrainTrain.Test.Acceptance
+namespace TrainTrain.Test.TDD.Acceptance
 {
     public static class TrainTopologyGenerator
     {

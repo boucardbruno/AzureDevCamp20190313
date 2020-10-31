@@ -2,9 +2,9 @@
 using NUnit.Framework;
 using TrainTrain.Domain;
 using TrainTrain.Infra.Adapter;
-using TrainTrain.Test.Acceptance;
+using TrainTrain.Test.TDD.Acceptance;
 
-namespace TrainTrain.Test.Unit
+namespace TrainTrain.Test.TDD.Unit
 {
     internal class TrainShould
     {
