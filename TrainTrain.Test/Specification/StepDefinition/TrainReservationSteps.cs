@@ -20,9 +20,6 @@ namespace TrainTrain.Test.Specification.StepDefinition
         private IProvideTrainTopology _provideTrainTopology;
         private int _seatsCountRequested;
 
-        private IProvideTicket TicketOffice { get; set; }
-        private Reservation Reservation { get; set; }
-
         [Given(@"one coach empty made of (.*) seats")]
         public void GivenOneCoachEmptyMadeOfSeats(int availableSeats)
         {
@@ -57,34 +54,33 @@ namespace TrainTrain.Test.Specification.StepDefinition
         [Then(@"the reservation should be assigned these seats ""(.*)""")]
         public async Task ThenTheReservationShouldBeAssignedTheseSeats(string expectedSeats)
         {
-            var seatsAsString = string.Join(", ", expectedSeats.Split(",").Select(s => $"\"{s.Trim()}\""));
-
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
             var provideReservationService = BuildMakeReservation(_trainId, _bookingReference, expectedSeats);
 
-            TicketOffice =
+            var ticketOffice =
                 new TicketOfficeService(_provideTrainTopology, provideReservationService, bookingReferenceService);
 
-            Reservation = await TicketOffice.Reserve(_trainId, new SeatsRequested(_seatsCountRequested));
+            var reservation = await ticketOffice.Reserve(_trainId, new SeatsRequested(_seatsCountRequested));
 
+            var seatsAsJsonString = AdaptSeatsToJson(expectedSeats);
 
-            Check.That(SeatsReservationAdapter.AdaptReservation(Reservation))
+            Check.That(SeatsReservationAdapter.AdaptReservation(reservation))
                 .IsEqualTo(
-                    $"{{\"train_id\": \"{_trainId}\", \"booking_reference\": \"{_bookingReference}\", \"seats\": [{seatsAsString}]}}");
+                    $"{{\"train_id\": \"{_trainId}\", \"booking_reference\": \"{_bookingReference}\", \"seats\": [{seatsAsJsonString}]}}");
         }
 
         [Then(@"the reservation should be failed")]
         public async Task ThenTheReservationShouldBeFailed()
         {
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
-            var provideReservationService = BuildMakeReservation(_trainId, _bookingReference, "");
+            var provideReservationService = BuildMakeReservation(_trainId, _bookingReference, string.Empty);
 
-            TicketOffice =
+            var ticketOffice =
                 new TicketOfficeService(_provideTrainTopology, provideReservationService, bookingReferenceService);
 
-            Reservation = await TicketOffice.Reserve(_trainId, new SeatsRequested(_seatsCountRequested));
+            var reservation = await ticketOffice.Reserve(_trainId, new SeatsRequested(_seatsCountRequested));
 
-            Check.That(SeatsReservationAdapter.AdaptReservation(Reservation))
+            Check.That(SeatsReservationAdapter.AdaptReservation(reservation))
                 .IsEqualTo($"{{\"train_id\": \"{_trainId}\", \"booking_reference\": \"\", \"seats\": []}}");
         }
 
@@ -134,6 +130,11 @@ namespace TrainTrain.Test.Specification.StepDefinition
         {
             var value = seatAsString[0].ToString();
             return (seatAsString[1].ToString(), Convert.ToInt32(value));
+        }
+
+        private static string AdaptSeatsToJson(string expectedSeats)
+        {
+            return string.Join(", ", expectedSeats.Split(",").Select(s => $"\"{s.Trim()}\""));
         }
     }
 }
