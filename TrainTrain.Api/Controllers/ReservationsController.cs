@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TrainTrain.Api.Models;
 
 namespace TrainTrain.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     public class ReservationsController : Controller
     {
         [HttpGet]
