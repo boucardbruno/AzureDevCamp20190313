@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TrainTrain.Domain;
@@ -85,16 +81,16 @@ namespace TrainTrain.Infra
             //"{\"seats\": {\"1A\": {\"booking_reference\": \"\", \"seat_number\": \"1\", \"coach\": \"A\"}, \"2A\": {\"booking_reference\": \"\", \"seat_number\": \"2\", \"coach\": \"A\"}}}";
 
             // Forced to workaround with dynamic parsing since the received JSON is invalid format ;-(
-            dynamic parsed = JsonConvert.DeserializeObject(trainTopology);
+            dynamic parsed = JsonConvert.DeserializeObject(trainTopology)!;
 
             foreach (var token in (JContainer) parsed)
             {
-                var allStuffs = (JObject) ((JContainer) token).First;
+                var allStuffs = (JObject) ((JContainer) token).First!;
 
                 foreach (var stuff in allStuffs)
                 {
-                    var seatPoco = stuff.Value.ToObject<SeatJsonPoco>();
-                    seats.Add(new Seat(seatPoco.coach, int.Parse(seatPoco.seat_number), seatPoco.booking_reference));
+                    var seatPoco = stuff.Value!.ToObject<SeatJsonPoco>();
+                    seats.Add(new Seat(seatPoco!.coach, int.Parse(seatPoco.seat_number), seatPoco.booking_reference));
                 }
             }
 

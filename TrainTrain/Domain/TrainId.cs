@@ -9,8 +9,10 @@ namespace TrainTrain.Domain
         public string TrainNumber { get; }
         public DateTime Date { get; }
         public string Id => $"{TrainNumber}-{Date:yyyy-MM-dd}";
+        
         public TrainId(string id)
         {
+            TrainNumber = string.Empty;
 
             try
             {
