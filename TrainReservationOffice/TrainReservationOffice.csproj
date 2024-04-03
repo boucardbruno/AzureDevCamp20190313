@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>12</LangVersion>
+        <RootNamespace>TrainReservationOffice</RootNamespace>
+        <AssemblyName>TrainReservationOffice</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Value" Version="1.1.0.1"/>
+    </ItemGroup>
+
+</Project>

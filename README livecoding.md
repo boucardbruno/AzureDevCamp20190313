@@ -1,56 +1,75 @@
 # kata-LegacyTrain
-Kata on how to refactor a typical legacy code base (directly inspired by [Emily Bache's kata](https://github.com/emilybache/KataTrainReservation).
+
+Kata on how to refactor a typical legacy code base (directly inspired
+by [Emily Bache's kata](https://github.com/emilybache/KataTrainReservation).
 
 Too many projects have layered-based...
 
-## Contexte: 
-SSII a gagné un appel d'offre pour mise en oeuvre rapide d'un logiciel de réservation de sièges dans les trains.
-Après avoir développé une première verison de l'appli, la SSII a continuée a faire evoluer le système jusqu'à arriver à une situation de blocage: le client demande une modification de l'algoithme de reservation ce qui semble impossible à la SSII (qui plus est, à perdu entre-temps tous ses développeurs partis faire autre chose de plus intéressant).
-La SSII a jetée l'éponge en produisant un avenant/devis hors de prix pour le client qui nous sollicite pour "reprendre le dossier".
+## Contexte:
 
-Nous arrivons donc sur une code base assez moche, pour laquelle nous n'avons plus de développeurs pour nous expliquer leurs intentions initiales et justifier de leurs choix. Heureusement pour nous, le client mets à notre disposition un expert du domaine pendant 3 heures pour répondre à nos questions.
+SSII a gagnï¿½ un appel d'offre pour mise en oeuvre rapide d'un logiciel de rï¿½servation de siï¿½ges dans les trains.
+Aprï¿½s avoir dï¿½veloppï¿½ une premiï¿½re verison de l'appli, la SSII a continuï¿½e a faire evoluer le systï¿½me jusqu'ï¿½ arriver ï¿½
+une situation de blocage: le client demande une modification de l'algoithme de reservation ce qui semble impossible ï¿½ la
+SSII (qui plus est, ï¿½ perdu entre-temps tous ses dï¿½veloppeurs partis faire autre chose de plus intï¿½ressant).
+La SSII a jetï¿½e l'ï¿½ponge en produisant un avenant/devis hors de prix pour le client qui nous sollicite pour "reprendre
+le dossier".
 
-On est assez inquiet par la difficulté potentielle, mais comme on est joeur on a accepté cette mission mais on compte sur vous pour nous aider.
+Nous arrivons donc sur une code base assez moche, pour laquelle nous n'avons plus de dï¿½veloppeurs pour nous expliquer
+leurs intentions initiales et justifier de leurs choix. Heureusement pour nous, le client mets ï¿½ notre disposition un
+expert du domaine pendant 3 heures pour rï¿½pondre ï¿½ nos questions.
 
-La nouvelle feature est de supporter une autre façon de reserver des places de trains pour un autre grand distributeur qui n'aime pas du tout notre format JSON de retour => on va donc lui exposer un nouveau entry point pour supporter son besoin.
-TrainTrainCorp se rends compte qu'avec l'arrivée de ce clients et les volumes énormes corrspondant attendus => mettre à jour l'algo de réservation en introduisant une nouvelle règle : "Dans l'idéal, ne pas charger les voitures du train à plus de 70% de leur capacité."
+On est assez inquiet par la difficultï¿½ potentielle, mais comme on est joeur on a acceptï¿½ cette mission mais on compte
+sur vous pour nous aider.
 
-Couplet sur le contexte organisationel : 
- - On a externalisé le TrainDataService pour des questions de scalabilité
- - On a externalisé le BookingReferenceService pour répondre à une contrainte réglementaire Européene (trouver un truc rigolo et absurde).
+La nouvelle feature est de supporter une autre faï¿½on de reserver des places de trains pour un autre grand distributeur
+qui n'aime pas du tout notre format JSON de retour => on va donc lui exposer un nouveau entry point pour supporter son
+besoin.
+TrainTrainCorp se rends compte qu'avec l'arrivï¿½e de ce clients et les volumes ï¿½normes corrspondant attendus => mettre ï¿½
+jour l'algo de rï¿½servation en introduisant une nouvelle rï¿½gle : "Dans l'idï¿½al, ne pas charger les voitures du train ï¿½
+plus de 70% de leur capacitï¿½."
+
+Couplet sur le contexte organisationel :
+
+- On a externalisï¿½ le TrainDataService pour des questions de scalabilitï¿½
+- On a externalisï¿½ le BookingReferenceService pour rï¿½pondre ï¿½ une contrainte rï¿½glementaire Europï¿½ene (trouver un truc
+  rigolo et absurde).
 
 ## Description de l'architecture
-On a récupéré le diagramme suivant qui a l'air d'etre à jour et qu'on vous commente.
 
+On a rï¿½cupï¿½rï¿½ le diagramme suivant qui a l'air d'etre ï¿½ jour et qu'on vous commente.
 
 Montrer dessin.
 
-
 ## Etapes
 
-1. On rajoute des tests d'acceptance sur les uses cases intiaux (Pas plus de 70% du train et pas de reservation a cheval sur 2 voitures)
-	- Surprise : la deuxieme regle (non chevauchement) n'est pas implémentée... Discussion avec l'expert qui n'en croit pas ses yeux.
-	- On propose au client d'implémenter cette règle en même temps que la nouvelle feature (la règle sera valable quelque soit les modalités de réservation (historique et nouveau).
+1. On rajoute des tests d'acceptance sur les uses cases intiaux (Pas plus de 70% du train et pas de reservation a cheval
+   sur 2 voitures)
+    - Surprise : la deuxieme regle (non chevauchement) n'est pas implï¿½mentï¿½e... Discussion avec l'expert qui n'en croit
+      pas ses yeux.
+    - On propose au client d'implï¿½menter cette rï¿½gle en mï¿½me temps que la nouvelle feature (la rï¿½gle sera valable
+      quelque soit les modalitï¿½s de rï¿½servation (historique et nouveau).
 
-2. On rajoute 1 test d'acceptance sur la nouvelle feature -> nouveau format de retour sur scenarii avec moins de 70% de charge par voiture
+2. On rajoute 1 test d'acceptance sur la nouvelle feature -> nouveau format de retour sur scenarii avec moins de 70% de
+   charge par voiture
 
-3. On fait émerger le concept de Coach qui n'existait pas dans le code existant
-4. On sépare bien le code du domaine (plus du tout anémique) avec le code technique
-5. On extrait le format de sérialization du domaine métier en le situant dans des adapteurs à la périphérie du système (archi hexagonale FTW)
+3. On fait ï¿½merger le concept de Coach qui n'existait pas dans le code existant
+4. On sï¿½pare bien le code du domaine (plus du tout anï¿½mique) avec le code technique
+5. On extrait le format de sï¿½rialization du domaine mï¿½tier en le situant dans des adapteurs ï¿½ la pï¿½riphï¿½rie du systï¿½me (
+   archi hexagonale FTW)
 
-En route : 
- - on se sera débarrassé le l'état des trains persistés/cachés dans le service TrainTrain (à tord, car d'autres gens peuvent modifier les reservations des trains via le TrainData service)
- - on se sera débarrassé de l'ORM
- 
+En route :
 
- Suite à notre refactoring, on peut commencer à avoir des discussions intéressantes avec le métier sur un autre problème qui le taraude: la modification de la topologies des trains à postériori qui était problématique avant a cause du caching des trains du service TrainTrain.
+- on se sera dï¿½barrassï¿½ le l'ï¿½tat des trains persistï¿½s/cachï¿½s dans le service TrainTrain (ï¿½ tord, car d'autres gens
+  peuvent modifier les reservations des trains via le TrainData service)
+- on se sera dï¿½barrassï¿½ de l'ORM
 
-
+Suite ï¿½ notre refactoring, on peut commencer ï¿½ avoir des discussions intï¿½ressantes avec le mï¿½tier sur un autre problï¿½me
+qui le taraude: la modification de la topologies des trains ï¿½ postï¿½riori qui ï¿½tait problï¿½matique avant a cause du
+caching des trains du service TrainTrain.
 
 T-Shirts:
- - le client à toujours raison (bleu acier)
- - l'équipe du Train-Train (rose pétant)
 
+- le client ï¿½ toujours raison (bleu acier)
+- l'ï¿½quipe du Train-Train (rose pï¿½tant)
 
-
- sklmk
+sklmk
