@@ -21,8 +21,8 @@ public class TicketOffice(IProvideTrainData provideTrainData, IProvideBookingRef
     private async Task<Reservation> BookingReservationAttempt(ReservationAttempt reservationAttempt)
     {
         var bookingReference = await provideBookingReference.GetBookingReference();
-        reservationAttempt = reservationAttempt.AssignBookingReference(bookingReference);
-        await provideTrainData.BookSeats(reservationAttempt);
-        return reservationAttempt.Confirm();
+        var reservationAttemptAssigned = reservationAttempt.AssignBookingReference(bookingReference);
+        await provideTrainData.BookSeats(reservationAttemptAssigned);
+        return reservationAttemptAssigned.Confirm();
     }
 }

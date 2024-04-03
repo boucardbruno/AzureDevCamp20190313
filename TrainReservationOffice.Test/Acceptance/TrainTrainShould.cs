@@ -11,11 +11,13 @@ public class TrainTrainShould
     private readonly TrainId _trainId = new("9043-2019-03-13");
 
     [Test]
-    public async Task Reserve_seats_when_train_is_empty()
+    public async Task Reserve_seat_when_train_is_empty()
     {
         var requestForSeats = new RequestForSeats(3);
 
-        var trainDataService = BuildTrainDataService(_trainId, TrainTopologyGenerator.With_10_available_seats());
+        var trainDataService = BuildTrainDataService(_trainId, TrainTopologyGenerator
+            .With_10_available_seats());
+        
         var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
         var ticketOffice = new TicketOffice(trainDataService, bookingReferenceService);
@@ -32,7 +34,9 @@ public class TrainTrainShould
         var requestForSeats = new RequestForSeats(2);
 
         var trainDataService =
-            BuildTrainDataService(_trainId, TrainTopologyGenerator.With_10_seats_and_6_already_reserved());
+            BuildTrainDataService(_trainId, TrainTopologyGenerator
+                .With_10_seats_and_6_already_reserved());
+        
         var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
         var ticketOffice = new TicketOffice(trainDataService, bookingReferenceService);
@@ -49,7 +53,9 @@ public class TrainTrainShould
         var requestForSeats = new RequestForSeats(2);
 
         var trainDataService = BuildTrainDataService(_trainId,
-            TrainTopologyGenerator.With_2_coaches_and_9_seats_already_reserved_in_the_first_coach());
+            TrainTopologyGenerator
+                .With_2_coaches_and_9_seats_already_reserved_in_the_first_coach());
+        
         var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
         var ticketManager = new TicketOffice(trainDataService, bookingReferenceService);
