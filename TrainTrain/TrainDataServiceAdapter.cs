@@ -17,7 +17,7 @@ namespace TrainTrain
             _uriTrainDataService = uriTrainDataService;
         }
 
-        public async Task<Train> GetTrain(string trainId)
+        public async Task<Train> GetTrainId(string trainId)
         {
             using (var client = new HttpClient())
             {

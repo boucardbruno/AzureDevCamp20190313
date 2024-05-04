@@ -14,7 +14,7 @@ namespace TrainTrain
 
         public async Task<Reservation> Reserve(string trainId, int seatsRequestedCount)
         {
-            var train = await trainDataService.GetTrain(trainId);
+            var train = await trainDataService.GetTrainId(trainId);
 
             if (train.DoesNotExceedOverallTrainCapacity(seatsRequestedCount))
             {
