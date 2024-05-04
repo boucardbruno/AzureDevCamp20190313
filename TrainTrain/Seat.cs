@@ -17,5 +17,10 @@
         {
             return BookingRef == "";
         }
+
+        public override string ToString()
+        {
+            return $"\"{SeatNumber}{CoachName}\"";
+        }
     }
 }

@@ -3,21 +3,14 @@ using System.Linq;
 
 namespace TrainTrain
 {
-    public class ReservationAttempt
+    public class ReservationAttempt(string trainId, int seatsRequestedCount, IEnumerable<Seat> seats)
     {
-        public string TrainId { get; }
-        public List<Seat> Seats { get; }
+        public string TrainId { get; } = trainId;
+        public List<Seat> Seats { get; private set; } = seats.ToList();
         public string BookingReference { get; private set; }
-        public int SeatsRequestedCount { get; }
+        private int SeatsRequestedCount { get; } = seatsRequestedCount;
 
-        public ReservationAttempt(string trainId, int seatsRequestedCount, IEnumerable<Seat> seats)
-        {
-            TrainId = trainId;
-            SeatsRequestedCount = seatsRequestedCount;
-            Seats = seats.ToList();
-        }
-
-        public bool IsFulFilled()
+        public bool IsFulfilled()
         {
             return Seats.Count == SeatsRequestedCount;
         }
@@ -25,10 +18,9 @@ namespace TrainTrain
         public void AssignBookingReference(string bookingReference)
         {
             BookingReference = bookingReference;
-            foreach (var seat in Seats)
-            {
-                seat.BookingRef = bookingReference;
-            }
+            Seats = Seats
+                .Select(s => new Seat(s.CoachName, s.SeatNumber, bookingReference))
+                .ToList();
         }
 
         public Reservation Confirm()

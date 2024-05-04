@@ -2,11 +2,5 @@
 
 namespace TrainTrain
 {
-    public class ReservationFailure : Reservation
-    {
-        public ReservationFailure(string trainId):base(trainId, string.Empty, new List<Seat>())
-        {
-            
-        }
-    }
+    public class ReservationFailure(string trainId) : Reservation(trainId, string.Empty, new List<Seat>());
 }
