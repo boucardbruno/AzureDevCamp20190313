@@ -32,7 +32,22 @@ namespace TrainTrain
 
         public ReservationAttempt BuildReservationAttempt(int seatsRequestedCount)
         {
-            var availableSeats = Seats.Where(s => s.IsAvailable()).Take(seatsRequestedCount);
+            var availableSeats = new List<Seat>();
+            
+            foreach (var seat in Seats)
+            {
+                if (seat.IsAvailable())
+                {
+                    if (availableSeats.Count < seatsRequestedCount)
+                    {
+                        availableSeats.Add(seat);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
 
             return new ReservationAttempt(TrainId, seatsRequestedCount, availableSeats);
         }
