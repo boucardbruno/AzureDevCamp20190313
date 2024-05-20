@@ -4,14 +4,8 @@ using System.Linq;
 
 namespace TrainTrain
 {
-    public class Train
+    public class Train(string trainId, List<Seat> seats)
     {
-        public Train(string trainId, List<Seat> seats)
-        {
-            TrainId = trainId;
-            Seats = seats;
-        }
-
         private int GetMaxSeat()
         {
             return Seats.Count;
@@ -22,8 +16,8 @@ namespace TrainTrain
             get { return Seats.Count(s => !string.IsNullOrEmpty(s.BookingRef)); }
         }
 
-        public string TrainId { get; }
-        public List<Seat> Seats { get; }
+        public string TrainId { get; } = trainId;
+        public List<Seat> Seats { get; } = seats;
 
         public bool DoesNotExceedOverallTrainCapacity(int seatsRequestedCount)
         {
