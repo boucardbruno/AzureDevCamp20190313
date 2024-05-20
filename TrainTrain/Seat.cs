@@ -1,17 +1,10 @@
 ﻿namespace TrainTrain
 {
-    public class Seat
+    public class Seat(string coachName, int seatNumber, string bookingRef)
     {
-        public string CoachName { get; }
-        public int SeatNumber { get; }
-        public string BookingRef { get; set;  }
-
-        public Seat(string coachName, int seatNumber, string bookingRef)
-        {
-            CoachName = coachName;
-            SeatNumber = seatNumber;
-            BookingRef = bookingRef;
-        }
+        public string CoachName { get; } = coachName;
+        public int SeatNumber { get; } = seatNumber;
+        public string BookingRef { get; set;  } = bookingRef;
 
         public bool IsAvailable()
         {
