@@ -2,19 +2,18 @@
 
 namespace TrainTrain
 {
-    public class TicketOffice(ITrainDataService provideTrainRepository, IBookingReferenceService bookingReferenceService)
+    public class TicketOffice(ITrainDataService trainRepository, IBookingReferenceService bookingReferenceRepository)
     {
         private const string UriTrainDataService = "http://localhost:50680";
         private const string UriBookingReferenceService = "http://localhost:51691/";
 
         public TicketOffice():this(new TrainDataServiceAdapter(UriTrainDataService), new BookingReferenceServiceAdapter(UriBookingReferenceService))
         {
-            
         }
 
         public async Task<Reservation> Reserve(string trainId, int seatsRequestedCount)
         {
-            var train = await provideTrainRepository.FindTrainById(trainId);
+            var train = await trainRepository.FindTrainById(trainId);
 
             if (train.DoesNotExceedOverallTrainCapacity(seatsRequestedCount))
             {
@@ -22,11 +21,11 @@ namespace TrainTrain
 
                 if (reservationAttempt.IsFulfilled())
                 {
-                    var bookingReference = await bookingReferenceService.GetBookingReference();
+                    var bookingReference = await bookingReferenceRepository.GetBookingReference();
 
                     reservationAttempt.AssignBookingReference(bookingReference);
 
-                    await provideTrainRepository.BookSeats(reservationAttempt);
+                    await trainRepository.BookSeats(reservationAttempt);
 
                     return reservationAttempt.Confirm();
                 }
