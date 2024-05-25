@@ -11,7 +11,7 @@ namespace TrainTrain.Test.Acceptance
         private const string BookingReference = "75bcd15";
 
         [Test]
-        public async Task Reserve_seats_when_train_is_empty()
+        public async Task Reserve_3_seats_when_train_with_10_seats_all_available()
         {
             const int seatsRequestedCount = 3;
 
@@ -23,7 +23,9 @@ namespace TrainTrain.Test.Acceptance
                 .Reserve(TrainId, seatsRequestedCount);
 
             Check.That(SeatsReservationAdapter.AdaptReservation(reservation))
-                .IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1A\", \"2A\", \"3A\"]}}");
+                .IsEqualTo($"{{\"train_id\": \"{TrainId}\", " +
+                           $"\"booking_reference\": \"{BookingReference}\", " +
+                           $"\"seats\": [\"1A\", \"2A\", \"3A\"]}}");
         }
 
         [Test]
@@ -39,7 +41,9 @@ namespace TrainTrain.Test.Acceptance
                 .Reserve(TrainId, seatsRequestedCount);
 
             Check.That(SeatsReservationAdapter.AdaptReservation(reservation))
-                .IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"\", \"seats\": []}}");
+                .IsEqualTo($"{{\"train_id\": \"{TrainId}\"," +
+                           $" \"booking_reference\": \"\", " +
+                           $"\"seats\": []}}");
         }
 
 
@@ -57,7 +61,9 @@ namespace TrainTrain.Test.Acceptance
                 .Reserve(TrainId, seatsRequestedCount);
 
             Check.That(SeatsReservationAdapter.AdaptReservation(reservation))
-                .IsEqualTo($"{{\"train_id\": \"{TrainId}\", \"booking_reference\": \"{BookingReference}\", \"seats\": [\"1B\", \"2B\"]}}");
+                .IsEqualTo($"{{\"train_id\": \"{TrainId}\", " +
+                           $"\"booking_reference\": \"{BookingReference}\", " +
+                           $"\"seats\": [\"1B\", \"2B\"]}}");
         }
         
         private static IBookingReferenceService BuildBookingReferenceService(string bookingReference)
@@ -70,7 +76,7 @@ namespace TrainTrain.Test.Acceptance
         private static ITrainDataService BuildTrainDataService(string trainId, string trainTopology)
         {
             var trainDataService = Substitute.For<ITrainDataService>();
-            trainDataService.GetTrainId(trainId)
+            trainDataService.FindTrainById(trainId)
                 .Returns(Task.FromResult(new Train(trainId, TrainDataServiceAdapter.AdaptTrainTopology(trainTopology))));
             return trainDataService;
         }
