@@ -19,7 +19,7 @@ namespace TrainTrain.Infra.Adapter
             _uriTrainDataService = uriTrainDataService;
         }
 
-        public async Task<Train> GetTrain(TrainId trainId)
+        public async Task<Train> GetTrainBy(TrainId trainId)
         {
             using (var client = new HttpClient())
             {

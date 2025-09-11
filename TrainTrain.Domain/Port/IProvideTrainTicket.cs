@@ -2,7 +2,7 @@
 
 namespace TrainTrain.Domain.Port
 {
-    public interface IProvideTicket
+    public interface IProvideTrainTicket
     {
         Task<Reservation> Reserve(TrainId trainId, SeatsRequested seatsRequested);
     }

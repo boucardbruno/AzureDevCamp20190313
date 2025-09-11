@@ -5,20 +5,13 @@ using TrainTrain.Infra.Adapter;
 namespace TrainTrain.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class ReservationsController : Controller
+    public class ReservationsController(SeatsReservationAdapter seatsReservationAdapter) : Controller
     {
-        private readonly SeatsReservationAdapter _seatsReservationAdapter;
-
-        public ReservationsController(SeatsReservationAdapter seatsReservationAdapter)
-        {
-            _seatsReservationAdapter = seatsReservationAdapter;
-        }
-
         [HttpGet]
         public async Task<ActionResult<string>> Get([FromQuery(Name = "trainId")] string trainId,
             [FromQuery(Name = "numberOfSeats")] int numberOfSeats)
         {
-            return await _seatsReservationAdapter.ReserveAsync(trainId, numberOfSeats);
+            return await seatsReservationAdapter.ReserveAsync(trainId, numberOfSeats);
         }
     }
 }

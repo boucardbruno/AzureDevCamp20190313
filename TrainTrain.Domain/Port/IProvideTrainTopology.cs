@@ -4,6 +4,6 @@ namespace TrainTrain.Domain.Port
 {
     public interface IProvideTrainTopology
     {
-        Task<Train> GetTrain(TrainId trainId);
+        Task<Train> GetTrainBy(TrainId trainId);
     }
 }

@@ -58,7 +58,7 @@ namespace TrainTrain.Test.Specification.StepDefinition
             var provideReservationService = BuildMakeReservation(_trainId, _bookingReference, expectedSeats);
 
             var ticketOffice =
-                new TicketOfficeService(_provideTrainTopology, provideReservationService, bookingReferenceService);
+                new TrainTicketOfficeService(_provideTrainTopology, provideReservationService, bookingReferenceService);
 
             var reservation = await ticketOffice.Reserve(_trainId, new SeatsRequested(_seatsCountRequested));
 
@@ -76,7 +76,7 @@ namespace TrainTrain.Test.Specification.StepDefinition
             var provideReservationService = BuildMakeReservation(_trainId, _bookingReference, string.Empty);
 
             var ticketOffice =
-                new TicketOfficeService(_provideTrainTopology, provideReservationService, bookingReferenceService);
+                new TrainTicketOfficeService(_provideTrainTopology, provideReservationService, bookingReferenceService);
 
             var reservation = await ticketOffice.Reserve(_trainId, new SeatsRequested(_seatsCountRequested));
 
@@ -94,7 +94,7 @@ namespace TrainTrain.Test.Specification.StepDefinition
         private static IProvideTrainTopology BuildTrainTopology(TrainId trainId, string trainTopology)
         {
             var trainDataService = Substitute.For<IProvideTrainTopology>();
-            trainDataService.GetTrain(trainId)
+            trainDataService.GetTrainBy(trainId)
                 .Returns(Task.FromResult(new Train(trainId,
                     TrainDataServiceAdapter.AdaptTrainTopology(trainTopology))));
 

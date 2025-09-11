@@ -22,8 +22,8 @@ namespace TrainTrain.Test.TDD.Acceptance
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
             var provideReservation = BuildMakeReservation(_trainId, _bookingReference, new Seat("A", 1), new Seat("A", 2), new Seat("A", 3));
 
-            IProvideTicket ticketOffice = new TicketOfficeService(provideTrainTopology, provideReservation, bookingReferenceService);
-            var seatsReservationAdapter = new SeatsReservationAdapter(ticketOffice);
+            IProvideTrainTicket trainTicketOffice = new TrainTicketOfficeService(provideTrainTopology, provideReservation, bookingReferenceService);
+            var seatsReservationAdapter = new SeatsReservationAdapter(trainTicketOffice);
 
             var jsonReservation = seatsReservationAdapter.ReserveAsync(_trainId.Id, seatsRequestedCount.Count).Result;
 
@@ -43,7 +43,7 @@ namespace TrainTrain.Test.TDD.Acceptance
             var provideReservation = BuildMakeReservation(_trainId, _bookingReference);
 
 
-            var ticketOffice = new TicketOfficeService(provideTrainTopology, provideReservation, bookingReferenceService);
+            var ticketOffice = new TrainTicketOfficeService(provideTrainTopology, provideReservation, bookingReferenceService);
             var reservation = ticketOffice.Reserve(_trainId, seatsRequestedCount).Result;
 
             Check.That(SeatsReservationAdapter.AdaptReservation(reservation))
@@ -62,7 +62,7 @@ namespace TrainTrain.Test.TDD.Acceptance
 
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
-            var ticketOffice = new TicketOfficeService(provideTrainTopology, provideReservation, bookingReferenceService);
+            var ticketOffice = new TrainTicketOfficeService(provideTrainTopology, provideReservation, bookingReferenceService);
             var reservation = ticketOffice.Reserve(_trainId, seatsRequestedCount).Result;
 
             Check.That(SeatsReservationAdapter.AdaptReservation(reservation))
@@ -82,7 +82,7 @@ namespace TrainTrain.Test.TDD.Acceptance
 
             var bookingReferenceService = BuildBookingReferenceService(_bookingReference);
 
-            var ticketOffice = new TicketOfficeService(provideTrainTopology, provideReservation, bookingReferenceService);
+            var ticketOffice = new TrainTicketOfficeService(provideTrainTopology, provideReservation, bookingReferenceService);
             var reservation = ticketOffice.Reserve(_trainId, seatsRequestedCount).Result;
 
             Check.That(SeatsReservationAdapter.AdaptReservation(reservation))
@@ -100,7 +100,7 @@ namespace TrainTrain.Test.TDD.Acceptance
         private static IProvideTrainTopology BuildTrainTopology(TrainId trainId, string trainTopology)
         {
             var trainDataService = Substitute.For<IProvideTrainTopology>();
-            trainDataService.GetTrain(trainId)
+            trainDataService.GetTrainBy(trainId)
                 .Returns(Task.FromResult(new Train(trainId,
                     TrainDataServiceAdapter.AdaptTrainTopology(trainTopology))));
 
